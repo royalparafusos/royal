@@ -86,7 +86,9 @@ public class MainView extends BorderPane {
         atalho.setOnAction(e -> ir(Tela.COMPRA));
         atualizacao.setVisible(false);
         atualizacao.setManaged(false);
-        atualizacao.setOnAction(e -> Atualizador.reiniciar());
+        atualizacao.setOnAction(e -> {
+            if (!Atualizador.reiniciar()) Ui.info("Atualização pronta", "Feche o Royal Pontos e abra de novo para usar a versão nova.");
+        });
         HBox topo = new HBox(16, new VBox(2, titulo, subtitulo), Ui.espaco(), atualizacao, banco, atalho);
         topo.setAlignment(Pos.CENTER_LEFT);
         topo.getStyleClass().add("topo");

@@ -133,3 +133,11 @@ $$;
 
 revoke all on function public.consultar_pontos(text, text) from public;
 grant execute on function public.consultar_pontos(text, text) to anon, authenticated;
+
+-- Logins lembrados ("Lembrar usuário e senha"): guarda só o hash do código salvo no computador
+create table if not exists lembrar_login (
+    token_hash varchar(100) primary key,
+    usuario_id bigint not null references usuarios(id),
+    criado_em timestamp
+);
+alter table lembrar_login enable row level security;

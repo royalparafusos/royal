@@ -198,6 +198,12 @@ public final class Db {
             estornado BOOLEAN NOT NULL DEFAULT FALSE,
             criado_em TIMESTAMP NOT NULL
         )""",
+        """
+        CREATE TABLE IF NOT EXISTS lembrar_login (
+            token_hash VARCHAR(100) PRIMARY KEY,
+            usuario_id BIGINT NOT NULL REFERENCES usuarios(id),
+            criado_em TIMESTAMP
+        )""",
         "CREATE INDEX IF NOT EXISTS ix_mov_cliente ON movimentos(cliente_id)",
         "CREATE INDEX IF NOT EXISTS ix_mov_data ON movimentos(criado_em)",
         "CREATE INDEX IF NOT EXISTS ix_mov_validade ON movimentos(expira_em)"

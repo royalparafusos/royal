@@ -4,6 +4,7 @@ import br.com.royal.pontos.App;
 import br.com.royal.pontos.db.Db;
 import br.com.royal.pontos.model.Usuario;
 import br.com.royal.pontos.service.Config;
+import br.com.royal.pontos.service.LembrarLogin;
 import br.com.royal.pontos.service.UsuarioService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -59,6 +60,14 @@ public class LoginView extends HBox {
         PasswordField senha = new PasswordField();
         senha.setPromptText("Sua senha");
         Label erro = Ui.label("", "erro-texto");
+        CheckBox lembrar = new CheckBox("Lembrar usuário e senha neste computador");
+        final String SENHA_SALVA = "\u2022salva\u2022";
+        String loginSalvo = LembrarLogin.loginSalvo();
+        if (loginSalvo != null) {
+            login.setText(loginSalvo);
+            senha.setText(SENHA_SALVA);
+            lembrar.setSelected(true);
+        }
         Button entrar = Ui.botao("Entrar", "btn-primario", null);
         entrar.getStyleClass().add("btn-grande");
         entrar.setMaxWidth(Double.MAX_VALUE);
@@ -68,9 +77,20 @@ public class LoginView extends HBox {
             erro.setText("");
             if (login.getText().isBlank() || senha.getText().isEmpty()) { erro.setText("Informe usuário e senha."); return; }
             try {
-                Usuario u = UsuarioService.autenticar(login.getText(), senha.getText());
-                if (u == null) { erro.setText("Usuário ou senha incorretos."); senha.clear(); return; }
-                boolean senhaPadrao = "admin".equals(senha.getText());
+                boolean usandoSalva = SENHA_SALVA.equals(senha.getText()) && login.getText().equalsIgnoreCase(String.valueOf(loginSalvo));
+                Usuario u = usandoSalva ? LembrarLogin.autenticarSalvo() : UsuarioService.autenticar(login.getText(), senha.getText());
+                if (u == null) {
+                    erro.setText(usandoSalva ? "A senha salva não vale mais. Digite a senha." : "Usuário ou senha incorretos.");
+                    if (usandoSalva) LembrarLogin.esquecer();
+                    senha.clear();
+                    return;
+                }
+                boolean senhaPadrao = !usandoSalva && "admin".equals(senha.getText());
+                try {
+                    if (!lembrar.isSelected()) LembrarLogin.esquecer();
+                    else if (!usandoSalva && !senhaPadrao) LembrarLogin.lembrar(u);
+                } catch (Exception ignored) {
+                }
                 App.mostrarPrincipal(u);
                 if (senhaPadrao) MinhaSenhaDialog.abrir(true);
             } catch (Exception ex) {
@@ -87,7 +107,7 @@ public class LoginView extends HBox {
 
         VBox form = new VBox(18,
                 new VBox(6, Ui.label("Bem-vindo de volta 👋", "login-bemvindo"), Ui.label("Entre para acessar o painel da loja.", "texto-suave")),
-                Ui.campo("Usuário", login), Ui.campo("Senha", senha), erro, entrar, primeira, Ui.espaco(), conexao);
+                Ui.campo("Usuário", login), Ui.campo("Senha", senha), lembrar, erro, entrar, primeira, Ui.espaco(), conexao);
         form.setMaxWidth(360);
         form.setAlignment(Pos.CENTER_LEFT);
         VBox lateral = new VBox(form);
@@ -99,7 +119,7 @@ public class LoginView extends HBox {
         form.setPadding(new Insets(40, 0, 0, 0));
 
         getChildren().addAll(lado, lateral);
-        javafx.application.Platform.runLater(login::requestFocus);
+        javafx.application.Platform.runLater(loginSalvo != null ? entrar::requestFocus : login::requestFocus);
     }
 
     private HBox item(String icone, String texto) {

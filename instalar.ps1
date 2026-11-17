@@ -39,7 +39,8 @@ try {
     $dist = Join-Path $base 'programa'
     if (Test-Path $dist) { Remove-Item $dist -Recurse -Force }
     & (Join-Path $jdk.FullName 'bin\jpackage.exe') --type app-image --input $app --main-jar royal-pontos.jar `
-        --main-class br.com.royal.pontos.Inicio --name 'Royal Pontos' --icon $ico --dest $dist --java-options '-Dfile.encoding=UTF-8'
+        --main-class br.com.royal.pontos.Inicio --name 'Royal Pontos' --icon $ico --dest $dist --java-options '-Dfile.encoding=UTF-8' `
+        --jlink-options '--strip-debug --no-man-pages --no-header-files'
     if ($LASTEXITCODE -ne 0) { throw "Falha no jpackage (codigo $LASTEXITCODE)" }
     $exe = Join-Path $dist 'Royal Pontos\Royal Pontos.exe'
 

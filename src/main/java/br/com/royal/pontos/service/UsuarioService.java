@@ -47,5 +47,6 @@ public final class UsuarioService {
     public static void alterarSenha(long id, String nova) {
         if (nova == null || nova.length() < 4) throw new DbException("A senha precisa ter pelo menos 4 caracteres.");
         Db.executar("UPDATE usuarios SET senha_hash=? WHERE id=?", Senha.hash(nova), id);
+        LembrarLogin.cancelarDoUsuario(id);
     }
 }

@@ -43,6 +43,7 @@ public final class Atualizador {
     /** Verifica e baixa uma versão nova. Retorna a versão baixada, ou null se já está atualizado. */
     public static String verificarEBaixar() throws Exception {
         if (!Versao.repositorioConfigurado()) return null;
+        log("Verificando atualizações (versão em uso " + versaoEmUso() + ")");
         HttpRequest req = HttpRequest.newBuilder(URI.create("https://api.github.com/repos/" + Versao.REPOSITORIO + "/releases/latest"))
                 .header("Accept", "application/vnd.github+json").header("User-Agent", "RoyalPontos")
                 .timeout(Duration.ofSeconds(20)).GET().build();
@@ -51,6 +52,7 @@ public final class Atualizador {
         JsonObject rel = JsonParser.parseString(r.body()).getAsJsonObject();
         String versao = rel.get("tag_name").getAsString().replaceFirst("^[vV]", "");
         if (Versao.comparar(versao, versaoEmUso()) <= 0) return null;
+        log("Versão nova disponível: " + versao);
 
         Path destino = PASTA.resolve("royal-pontos-" + versao + ".jar");
         if (Files.exists(destino)) return versao;
@@ -67,6 +69,7 @@ public final class Atualizador {
                 .timeout(Duration.ofMinutes(10)).GET().build(), HttpResponse.BodyHandlers.ofFile(parcial));
         if (d.statusCode() != 200 || !jarValido(parcial)) { Files.deleteIfExists(parcial); return null; }
         Files.move(parcial, destino, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+        log("Versão " + versao + " baixada em " + destino);
         limparAntigas();
         return versao;
     }
@@ -92,7 +95,7 @@ public final class Atualizador {
         }
     }
 
-    private static String versaoDe(Path p) {
+    public static String versaoDe(Path p) {
         Matcher m = NOME.matcher(p.getFileName().toString());
         return m.matches() ? m.group(1) : null;
     }
@@ -113,12 +116,35 @@ public final class Atualizador {
         }
     }
 
-    /** Fecha e abre de novo já na versão mais nova. */
-    public static void reiniciar() {
-        Path nova = versaoBaixadaMaisNova();
-        if (nova != null && abrirVersao(nova)) {
+    /** Fecha e abre o programa de novo (o Inicio carrega a versão mais nova baixada). */
+    public static boolean reiniciar() {
+        try {
+            String exe = System.getProperty("jpackage.app-path");
+            if (exe != null && new File(exe).exists()) {
+                log("Reiniciando pelo executável: " + exe);
+                new ProcessBuilder(exe).directory(new File(exe).getParentFile())
+                        .redirectOutput(ProcessBuilder.Redirect.DISCARD).redirectError(ProcessBuilder.Redirect.DISCARD).start();
+            } else {
+                Path nova = versaoBaixadaMaisNova();
+                if (nova == null || !abrirVersao(nova)) { log("Não foi possível reiniciar automaticamente."); return false; }
+            }
             javafx.application.Platform.exit();
             System.exit(0);
+            return true;
+        } catch (Exception e) {
+            log("Falha ao reiniciar: " + e);
+            return false;
+        }
+    }
+
+    /** Registro simples em Documentos do usuário/RoyalPontos/atualizacao.log (para diagnóstico). */
+    public static synchronized void log(String msg) {
+        try {
+            Files.createDirectories(AppConfig.PASTA);
+            Files.writeString(AppConfig.PASTA.resolve("atualizacao.log"),
+                    java.time.LocalDateTime.now().withNano(0) + "  " + msg + System.lineSeparator(),
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (Exception ignored) {
         }
     }
 
