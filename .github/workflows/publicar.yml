@@ -1,0 +1,59 @@
+# Publica automaticamente uma versão nova do Royal Pontos.
+# Sempre que o código é enviado e o número em Versao.java (ATUAL) ainda não tem Release,
+# o GitHub compila no Windows e publica o royal-pontos.jar. Os programas instalados baixam sozinhos.
+name: Publicar versão
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ler número da versão
+        id: v
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $v = (Select-String -Path src/main/java/br/com/royal/pontos/Versao.java -Pattern 'ATUAL = "([^"]+)"').Matches[0].Groups[1].Value
+          "versao=$v" >> $env:GITHUB_OUTPUT
+          gh release view "v$v" --repo "${{ github.repository }}" *> $null
+          if ($LASTEXITCODE -eq 0) { "existe=1" >> $env:GITHUB_OUTPUT; Write-Host "v$v já publicada" } else { "existe=0" >> $env:GITHUB_OUTPUT; Write-Host "Publicando v$v" }
+          exit 0
+
+      - name: Recriar imagens (guardadas em base64)
+        if: steps.v.outputs.existe == '0'
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Filter *.b64 | ForEach-Object {
+            $destino = $_.FullName -replace '\.b64$', ''
+            [IO.File]::WriteAllBytes($destino, [Convert]::FromBase64String((Get-Content $_.FullName -Raw).Trim()))
+          }
+
+      - uses: actions/setup-java@v4
+        if: steps.v.outputs.existe == '0'
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Compilar
+        if: steps.v.outputs.existe == '0'
+        run: mvn -B -q clean package -DskipTests
+
+      - name: Publicar Release
+        if: steps.v.outputs.existe == '0'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.v.outputs.versao }}
+          name: Royal Pontos ${{ steps.v.outputs.versao }}
+          files: target/royal-pontos.jar
+          generate_release_notes: true

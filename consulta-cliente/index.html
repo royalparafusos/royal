@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E36B0">
+<link rel="icon" href="icone.png">
+<link rel="apple-touch-icon" href="icone.png">
+<title>Royal Pontos — Consulte seus pontos</title>
+<style>
+  /* ============================================================
+     CONFIGURAÇÃO — preencha com os dados do seu projeto Supabase
+     (Project Settings › API). Use a chave "anon"/"publishable",
+     NUNCA a "service_role"/"secret".
+     ============================================================ */
+</style>
+<script>
+  const SUPABASE_URL = "";   // ex.: "https://abcdefghijk.supabase.co"
+  const SUPABASE_KEY = "";   // chave anon / publishable
+  const WHATSAPP_LOJA = "";  // ex.: "5538999999999" (opcional, botão "Fale com a loja")
+</script>
+<style>
+  :root {
+    --azul: #2340C9; --roxo: #5B2BD6; --magenta: #A0279E; --ouro: #FFC933; --ouro2: #F59E0B;
+    --noite: #0B1A3F; --texto: #0F1B3D; --texto2: #5F6987; --fundo: #F3F5FA; --verde: #0E8A55; --vermelho: #C62F3A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--fundo); color: var(--texto); min-height: 100vh; }
+  .topo { background: linear-gradient(135deg, var(--noite) 0%, #1E36B0 55%, var(--roxo) 100%); color: #fff; padding: 28px 20px 96px; position: relative; overflow: hidden; }
+  .topo::before, .topo::after { content: ""; position: absolute; border-radius: 50%; background: rgba(255,255,255,.06); }
+  .topo::before { width: 260px; height: 260px; right: -80px; top: -110px; }
+  .topo::after { width: 160px; height: 160px; left: -50px; bottom: -70px; }
+  .marca { display: flex; align-items: center; gap: 12px; max-width: 560px; margin: 0 auto; position: relative; z-index: 1; }
+  .logo { height: 54px; border-radius: 12px; background: #fff; padding: 5px 9px; display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.2); }
+  .logo img { height: 44px; display: block; }
+  .marca b { font-size: 19px; display: block; }
+  .marca small { color: var(--ouro); font-weight: 700; font-size: 11px; letter-spacing: 1.5px; }
+  .wrap { max-width: 560px; margin: -72px auto 40px; padding: 0 16px; position: relative; z-index: 2; }
+  .card { background: #fff; border-radius: 22px; padding: 24px; box-shadow: 0 10px 30px rgba(15,27,61,.08); margin-bottom: 18px; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { color: var(--texto2); font-size: 14px; line-height: 1.45; }
+  label { display: block; font-size: 12.5px; font-weight: 700; color: #47506E; margin: 18px 0 7px; }
+  input { width: 100%; font-size: 18px; padding: 14px 16px; border-radius: 13px; border: 1.5px solid #DDE2EF; background: #F7F8FC; color: var(--texto); outline: none; transition: .15s; font-weight: 600; letter-spacing: .5px; }
+  input:focus { border-color: var(--roxo); background: #fff; box-shadow: 0 0 0 4px rgba(91,43,214,.12); }
+  .btn { width: 100%; margin-top: 22px; border: 0; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 800; color: #fff; cursor: pointer;
+         background: linear-gradient(90deg, var(--azul), var(--roxo)); box-shadow: 0 8px 20px rgba(35,64,201,.3); transition: .15s; }
+  .btn:active { transform: scale(.98); }
+  .btn:disabled { opacity: .6; }
+  .erro { color: var(--vermelho); font-size: 13.5px; margin-top: 12px; min-height: 18px; font-weight: 600; }
+  .seguro { display: flex; gap: 8px; align-items: center; color: var(--texto2); font-size: 12px; margin-top: 16px; }
+  .seguro svg { width: 16px; fill: #12935B; flex: none; }
+
+  .hero { background: linear-gradient(120deg, #1E36B0 0%, var(--roxo) 55%, var(--magenta) 100%); color: #fff; border-radius: 24px; padding: 26px; position: relative; overflow: hidden;
+          box-shadow: 0 14px 34px rgba(91,43,214,.35); margin-bottom: 18px; }
+  .hero::after { content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,.08); right: -70px; top: -90px; }
+  .hero .ola { font-size: 15px; opacity: .9; }
+  .hero .rot { font-size: 11.5px; letter-spacing: 1.3px; opacity: .8; margin-top: 16px; font-weight: 700; }
+  .hero .pts { font-size: 52px; font-weight: 900; color: #FFD34D; line-height: 1.05; }
+  .hero .pts span { font-size: 20px; margin-left: 6px; }
+  .chip { display: inline-flex; gap: 6px; align-items: center; background: rgba(255,255,255,.16); border-radius: 30px; padding: 7px 13px; font-size: 12.5px; margin-top: 14px; margin-right: 6px; }
+  .alerta { background: #FFF8E1; border: 1px solid #FFE7A3; color: #7A5300; border-radius: 16px; padding: 14px 16px; font-size: 14px; margin-bottom: 18px; display: flex; gap: 10px; align-items: flex-start; font-weight: 600; }
+  .titulo { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+  .grade { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 14px; }
+  .premio { border: 1px solid #EEF0F6; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .premio .img { height: 96px; border-radius: 12px; background: linear-gradient(135deg, #F3F0FF, #EEF2FF); display: grid; place-items: center; overflow: hidden; }
+  .premio .img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .premio .img svg { width: 38px; fill: #B9AEF0; }
+  .premio b { font-size: 13.5px; line-height: 1.25; min-height: 34px; }
+  .premio .p { color: var(--roxo); font-weight: 900; font-size: 17px; }
+  .premio .p small { font-size: 11px; }
+  .barra { height: 6px; background: #EEF0F6; border-radius: 6px; overflow: hidden; }
+  .barra i { display: block; height: 100%; background: linear-gradient(90deg, var(--ouro), var(--ouro2)); border-radius: 6px; }
+  .ok { color: var(--verde); font-size: 12px; font-weight: 700; }
+  .falta { color: #A66F00; font-size: 12px; font-weight: 600; }
+  .desconto { background: linear-gradient(135deg, #FFF8E1, #FFF3CC); border-radius: 16px; padding: 16px; margin-top: 14px; font-size: 14.5px; }
+  .desconto b { color: #A66F00; }
+  .mov { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F0F2F7; }
+  .mov:last-child { border: 0; }
+  .ic { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; flex: none; font-size: 17px; }
+  .ic.c { background: #E2F7EC; } .ic.r { background: #F0E9FF; } .ic.e { background: #FFE9EA; } .ic.o { background: #EEF0F5; }
+  .mov .d { flex: 1; min-width: 0; }
+  .mov .d b { font-size: 14px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mov .d small { color: var(--texto2); font-size: 12px; }
+  .mov .v { font-weight: 800; font-size: 15px; }
+  .mais { color: var(--verde); } .menos { color: var(--vermelho); }
+  .acoes { display: flex; gap: 10px; }
+  .btn2 { flex: 1; text-align: center; text-decoration: none; border-radius: 13px; padding: 13px; font-weight: 800; font-size: 14px; cursor: pointer; border: 1.5px solid #D7DCEA; background: #fff; color: #23305A; }
+  .btn2.verde { background: #19B36B; color: #fff; border-color: #19B36B; }
+  .demo { background: #FFF3CC; color: #7A5300; text-align: center; font-size: 12.5px; padding: 8px; font-weight: 700; }
+  .rodape { text-align: center; color: #9AA3BC; font-size: 12px; margin: 10px 0 30px; }
+  .oculto { display: none !important; }
+  @media (min-width: 520px) { .grade { grid-template-columns: repeat(3, 1fr); } }
+</style>
+</head>
+<body>
+<div id="avisoDemo" class="demo oculto">Modo demonstração — configure o Supabase no início deste arquivo para ver os dados reais</div>
+<header class="topo">
+  <div class="marca">
+    <div class="logo"><img src="logo.png" alt="Royal"></div>
+    <div><b>Royal Pontos</b><small id="nomeLoja">ROYAL PARAFUSOS E EPIS</small></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ===== Tela de consulta ===== -->
+  <section id="telaLogin" class="card">
+    <h1>Consulte seus pontos</h1>
+    <p class="sub">Veja seu saldo, quando seus pontos vencem e os prêmios que você já pode trocar na loja.</p>
+    <form id="form" autocomplete="on">
+      <label for="cpf">Seu CPF</label>
+      <input id="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" autocomplete="off" required>
+      <label for="cel">4 últimos dígitos do seu celular</label>
+      <input id="cel" inputmode="numeric" placeholder="0000" maxlength="4" autocomplete="off" required>
+      <button class="btn" id="btnConsultar" type="submit">Ver meus pontos</button>
+      <div class="erro" id="erro"></div>
+    </form>
+    <div class="seguro"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+      Seus dados ficam protegidos. Só mostramos o saldo quando CPF e celular conferem.</div>
+  </section>
+
+  <!-- ===== Resultado ===== -->
+  <section id="telaSaldo" class="oculto">
+    <div class="hero">
+      <div class="ola" id="ola">Olá!</div>
+      <div class="rot">SEU SALDO</div>
+      <div class="pts"><span id="saldo" style="font-size:inherit;margin:0">0</span><span>pontos</span></div>
+      <div id="chips"></div>
+    </div>
+    <div id="alerta" class="alerta oculto"></div>
+
+    <div class="card" id="cardPremios">
+      <div class="titulo">Troque seus pontos</div>
+      <p class="sub" id="subPremios">Apresente seu CPF no balcão para resgatar.</p>
+      <div id="desconto" class="desconto oculto"></div>
+      <div class="grade" id="grade"></div>
+    </div>
+
+    <div class="card">
+      <div class="titulo">Extrato</div>
+      <p class="sub">Suas últimas movimentações</p>
+      <div id="extrato" style="margin-top:8px"></div>
+    </div>
+
+    <div class="acoes">
+      <a class="btn2" href="#" id="sair">Consultar outro CPF</a>
+      <a class="btn2 verde oculto" id="whats" target="_blank" rel="noopener">Fale com a loja</a>
+    </div>
+  </section>
+  <p class="rodape">Programa de fidelidade · pontos válidos conforme regulamento da loja</p>
+</main>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => Number(n || 0).toLocaleString("pt-BR");
+  const moeda = (v) => Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const data = (s) => { if (!s) return ""; const [a, m, d] = String(s).substring(0, 10).split("-"); return d + "/" + m + "/" + a; };
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const DEMO = !SUPABASE_URL || !SUPABASE_KEY;
+  const PRESENTE = '<svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm0 13H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>';
+
+  if (DEMO) $("avisoDemo").classList.remove("oculto");
+  if (WHATSAPP_LOJA) { $("whats").href = "https://wa.me/" + WHATSAPP_LOJA; $("whats").classList.remove("oculto"); }
+
+  $("cpf").addEventListener("input", (e) => {
+    let d = e.target.value.replace(/\D/g, "").slice(0, 11), r = "";
+    for (let i = 0; i < d.length; i++) { if (i === 3 || i === 6) r += "."; if (i === 9) r += "-"; r += d[i]; }
+    e.target.value = r;
+    if (d.length === 11) $("cel").focus();
+  });
+  $("cel").addEventListener("input", (e) => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 4); });
+
+  $("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    $("erro").textContent = "";
+    const cpf = $("cpf").value.replace(/\D/g, ""), cel = $("cel").value;
+    if (cpf.length !== 11) { $("erro").textContent = "Digite os 11 números do CPF."; return; }
+    if (cel.length !== 4) { $("erro").textContent = "Digite os 4 últimos dígitos do celular."; return; }
+    $("btnConsultar").disabled = true;
+    $("btnConsultar").textContent = "Consultando...";
+    try {
+      const r = DEMO ? demo() : await consultar(cpf, cel);
+      if (!r || !r.ok) $("erro").textContent = "Não encontramos seu cadastro com esses dados. Confira ou fale com a loja.";
+      else mostrar(r);
+    } catch (err) {
+      $("erro").textContent = "Não foi possível consultar agora. Tente novamente em instantes.";
+      console.error(err);
+    } finally {
+      $("btnConsultar").disabled = false;
+      $("btnConsultar").textContent = "Ver meus pontos";
+    }
+  });
+
+  $("sair").addEventListener("click", (e) => {
+    e.preventDefault();
+    $("telaSaldo").classList.add("oculto");
+    $("telaLogin").classList.remove("oculto");
+    $("cpf").value = ""; $("cel").value = "";
+    window.scrollTo(0, 0);
+  });
+
+  async function consultar(cpf, cel) {
+    const headers = { "Content-Type": "application/json", apikey: SUPABASE_KEY };
+    if (SUPABASE_KEY.startsWith("eyJ")) headers.Authorization = "Bearer " + SUPABASE_KEY;
+    const resp = await fetch(SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/rpc/consultar_pontos", {
+      method: "POST", headers, body: JSON.stringify({ p_cpf: cpf, p_final_celular: cel })
+    });
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    return resp.json();
+  }
+
+  function mostrar(r) {
+    if (r.loja) $("nomeLoja").textContent = r.loja.toUpperCase();
+    $("ola").textContent = "Olá, " + r.nome + "! 👑";
+    $("saldo").textContent = fmt(r.saldo);
+    let chips = "";
+    if (r.proximo_vencimento) chips += '<span class="chip">⏰ Próximo vencimento: ' + data(r.proximo_vencimento) + "</span>";
+    $("chips").innerHTML = chips;
+    if (r.a_vencer_30 > 0) {
+      $("alerta").innerHTML = "⚠️ <span>" + fmt(r.a_vencer_30) + " pontos vencem nos próximos 30 dias. Passe na loja e troque antes de perder!</span>";
+      $("alerta").classList.remove("oculto");
+    } else $("alerta").classList.add("oculto");
+
+    const modo = r.modo || "AMBOS";
+    const dp = Number(r.desconto_pontos || 100), dr = Number(r.desconto_reais || 5);
+    const desc = $("desconto");
+    if (modo !== "PRODUTOS") {
+      const pode = Math.floor(r.saldo / dp) * dr;
+      desc.innerHTML = "💰 Cada <b>" + fmt(dp) + " pontos</b> valem <b>" + moeda(dr) + "</b> de desconto." +
+        (pode > 0 ? "<br>Hoje você pode ganhar até <b>" + moeda(pode) + "</b> de desconto na sua compra!" : "");
+      desc.classList.remove("oculto");
+    } else desc.classList.add("oculto");
+
+    const grade = $("grade");
+    if (modo === "DESCONTO" || !r.premios || r.premios.length === 0) {
+      grade.innerHTML = "";
+      $("subPremios").textContent = modo === "DESCONTO" ? "Use seus pontos como desconto em qualquer compra." : "Em breve, novos prêmios.";
+    } else {
+      $("subPremios").textContent = "Apresente seu CPF no balcão para resgatar.";
+      grade.innerHTML = r.premios.map((p) => {
+        const pct = Math.min(100, Math.round((r.saldo / p.pontos) * 100));
+        const ok = r.saldo >= p.pontos;
+        return '<div class="premio"><div class="img">' + (p.imagem ? '<img src="' + esc(p.imagem) + '" alt="" loading="lazy">' : PRESENTE) + "</div>" +
+          "<b>" + esc(p.nome) + '</b><div class="p">' + fmt(p.pontos) + " <small>pts</small></div>" +
+          '<div class="barra"><i style="width:' + pct + '%"></i></div>' +
+          (ok ? '<div class="ok">✓ Você já pode trocar!</div>' : '<div class="falta">Faltam ' + fmt(p.pontos - r.saldo) + " pts</div>") + "</div>";
+      }).join("");
+    }
+
+    const nomes = { CREDITO: "Compra", RESGATE_PRODUTO: "Resgate", RESGATE_DESCONTO: "Desconto", EXPIRACAO: "Pontos vencidos", ESTORNO: "Estorno", AJUSTE: "Ajuste" };
+    const icones = { CREDITO: ["c", "🛒"], RESGATE_PRODUTO: ["r", "🎁"], RESGATE_DESCONTO: ["r", "💰"], EXPIRACAO: ["e", "⏰"], ESTORNO: ["o", "↩️"], AJUSTE: ["o", "⭐"] };
+    const ext = r.extrato || [];
+    $("extrato").innerHTML = ext.length === 0 ? '<p class="sub">Nenhuma movimentação ainda.</p>' : ext.map((m) => {
+      const ic = icones[m.tipo] || ["o", "•"];
+      const det = m.tipo === "CREDITO" && m.expira_em ? " · vale até " + data(m.expira_em) : "";
+      return '<div class="mov"><div class="ic ' + ic[0] + '">' + ic[1] + '</div><div class="d"><b>' + esc(m.descricao || nomes[m.tipo] || m.tipo) +
+        "</b><small>" + data(m.criado_em) + det + (m.estornado ? " · estornado" : "") + '</small></div><div class="v ' + (m.pontos > 0 ? "mais" : "menos") + '">' +
+        (m.pontos > 0 ? "+" : "") + fmt(m.pontos) + "</div></div>";
+    }).join("");
+
+    $("telaLogin").classList.add("oculto");
+    $("telaSaldo").classList.remove("oculto");
+    window.scrollTo(0, 0);
+  }
+
+  function demo() {
+    const hoje = new Date(), d = (n) => new Date(hoje.getTime() + n * 864e5).toISOString().substring(0, 10);
+    return {
+      ok: true, nome: "João", loja: "Royal Parafusos e EPIs", saldo: 2151, a_vencer_30: 383, proximo_vencimento: d(5),
+      modo: "AMBOS", desconto_pontos: "100", desconto_reais: "5.00",
+      extrato: [
+        { criado_em: d(0), tipo: "CREDITO", pontos: 150, descricao: "Compra na loja", expira_em: d(60) },
+        { criado_em: d(-3), tipo: "RESGATE_PRODUTO", pontos: -300, descricao: "1x Luva nitrílica (par)" },
+        { criado_em: d(-6), tipo: "CREDITO", pontos: 471, descricao: "NF 2673", expira_em: d(54) },
+        { criado_em: d(-9), tipo: "RESGATE_DESCONTO", pontos: -200, descricao: "Desconto de R$ 10,00" }
+      ],
+      premios: [
+        { nome: "Protetor auricular plug", pontos: 120 }, { nome: "Luva nitrílica (par)", pontos: 300 },
+        { nome: "Trena 5 metros", pontos: 650 }, { nome: "Capacete de segurança", pontos: 1200 },
+        { nome: "Lanterna de LED", pontos: 800 }, { nome: "Botina de segurança", pontos: 3500 }
+      ]
+    };
+  }
+})();
+</script>
+</body>
+</html>
