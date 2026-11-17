@@ -36,8 +36,13 @@ public class MainView extends BorderPane {
         Usuario u = Sessao.usuario();
 
         // ---- menu
-        StackPane logo = Ui.logo(74);
-        logo.setMaxWidth(Double.MAX_VALUE);
+        javafx.scene.image.ImageView logoImg = new javafx.scene.image.ImageView(new javafx.scene.image.Image(
+                MainView.class.getResource("/img/logo-branco.png").toExternalForm(), 0, 160, true, true));
+        logoImg.setPreserveRatio(true);
+        logoImg.setFitWidth(190);
+        logoImg.setSmooth(true);
+        StackPane logo = new StackPane(logoImg);
+        logo.setStyle("-fx-padding: 4 0 0 0;");
         VBox marca = new VBox(8, logo, Ui.label("PROGRAMA DE FIDELIDADE", "marca-sub"));
         marca.setAlignment(Pos.CENTER);
         marca.setStyle("-fx-padding: 0 0 10 0;");
