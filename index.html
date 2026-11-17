@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E36B0">
+<meta name="description" content="Royal Pontos: consulte seus pontos, prêmios e extrato do programa de fidelidade da Royal Parafusos e EPIs.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Royal Pontos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Royal Pontos — Seus pontos na Royal</title>
+<script src="config.js"></script>
+<style>
+  :root {
+    --azul: #2340C9; --roxo: #5B2BD6; --magenta: #A0279E; --ouro: #FFC933; --ouro2: #F59E0B;
+    --noite: #0B1A3F; --texto: #0F1B3D; --texto2: #5F6987; --fundo: #F3F5FA; --verde: #0E8A55; --vermelho: #C62F3A;
+    --topo: env(safe-area-inset-top, 0px); --base: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--fundo); }
+  body { font-family: -apple-system, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--texto); min-height: 100vh; }
+  .oculto { display: none !important; }
+  button { font-family: inherit; }
+
+  /* ---------- topo ---------- */
+  .topo { background: linear-gradient(135deg, var(--noite) 0%, #1E36B0 55%, var(--roxo) 100%); color: #fff;
+          padding: calc(18px + var(--topo)) 20px 92px; position: relative; overflow: hidden; }
+  .topo::before, .topo::after { content: ""; position: absolute; border-radius: 50%; background: rgba(255,255,255,.06); }
+  .topo::before { width: 260px; height: 260px; right: -80px; top: -110px; }
+  .topo::after { width: 160px; height: 160px; left: -50px; bottom: -70px; }
+  .topo-linha { display: flex; align-items: center; justify-content: space-between; max-width: 560px; margin: 0 auto; position: relative; z-index: 1; }
+  .logo { height: 46px; display: block; }
+  .topo small { display: block; color: var(--ouro); font-weight: 800; font-size: 10.5px; letter-spacing: 1.6px; margin-top: 4px; }
+  .btn-icone { background: rgba(255,255,255,.14); border: 0; color: #fff; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; cursor: pointer; }
+  .btn-icone svg { width: 20px; fill: #fff; }
+
+  .wrap { max-width: 560px; margin: -70px auto 0; padding: 0 16px calc(96px + var(--base)); position: relative; z-index: 2; }
+  .card { background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 10px 30px rgba(15,27,61,.08); margin-bottom: 16px; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { color: var(--texto2); font-size: 14px; line-height: 1.45; }
+  .titulo { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+
+  /* ---------- login ---------- */
+  label { display: block; font-size: 12.5px; font-weight: 700; color: #47506E; margin: 18px 0 7px; }
+  input[type=text], input[type=tel] { width: 100%; font-size: 19px; padding: 14px 16px; border-radius: 14px; border: 1.5px solid #DDE2EF; background: #F7F8FC;
+          color: var(--texto); outline: none; transition: .15s; font-weight: 700; letter-spacing: .5px; }
+  input:focus { border-color: var(--roxo); background: #fff; box-shadow: 0 0 0 4px rgba(91,43,214,.12); }
+  .lembrar { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-size: 14px; color: #23305A; font-weight: 600; }
+  .lembrar input { width: 22px; height: 22px; accent-color: var(--roxo); }
+  .btn { width: 100%; margin-top: 20px; border: 0; border-radius: 15px; padding: 16px; font-size: 16px; font-weight: 800; color: #fff; cursor: pointer;
+         background: linear-gradient(90deg, var(--azul), var(--roxo)); box-shadow: 0 8px 20px rgba(35,64,201,.3); }
+  .btn:active { transform: scale(.98); }
+  .btn:disabled { opacity: .6; }
+  .erro { color: var(--vermelho); font-size: 13.5px; margin-top: 12px; min-height: 18px; font-weight: 600; }
+  .seguro { display: flex; gap: 8px; align-items: center; color: var(--texto2); font-size: 12px; margin-top: 14px; }
+  .seguro svg { width: 16px; fill: #12935B; flex: none; }
+  .demo { background: #FFF3CC; color: #7A5300; text-align: center; font-size: 12px; padding: calc(6px + var(--topo)) 10px 6px; font-weight: 700; }
+
+  /* ---------- saldo ---------- */
+  .hero { background: linear-gradient(120deg, #1E36B0 0%, var(--roxo) 55%, var(--magenta) 100%); color: #fff; border-radius: 24px; padding: 24px; position: relative; overflow: hidden;
+          box-shadow: 0 14px 34px rgba(91,43,214,.35); margin-bottom: 16px; }
+  .hero::after { content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,.08); right: -70px; top: -90px; }
+  .hero .ola { font-size: 15px; opacity: .92; }
+  .hero .rot { font-size: 11.5px; letter-spacing: 1.3px; opacity: .8; margin-top: 14px; font-weight: 700; }
+  .hero .pts { font-size: 54px; font-weight: 900; color: #FFD34D; line-height: 1.05; }
+  .hero .pts span { font-size: 20px; margin-left: 6px; }
+  .chip { display: inline-flex; gap: 6px; align-items: center; background: rgba(255,255,255,.16); border-radius: 30px; padding: 7px 13px; font-size: 12.5px; margin-top: 12px; margin-right: 6px; }
+  .alerta { background: #FFF8E1; border: 1px solid #FFE7A3; color: #7A5300; border-radius: 16px; padding: 14px 16px; font-size: 14px; margin-bottom: 16px; font-weight: 600; line-height: 1.4; }
+  .meta { display: flex; gap: 14px; align-items: center; }
+  .meta .img { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, #F3F0FF, #EEF2FF); display: grid; place-items: center; flex: none; overflow: hidden; }
+  .meta .img img { max-width: 100%; max-height: 100%; }
+  .meta .img svg, .premio .img svg { width: 30px; fill: #B9AEF0; }
+  .barra { height: 8px; background: #EEF0F6; border-radius: 8px; overflow: hidden; margin-top: 8px; }
+  .barra i { display: block; height: 100%; background: linear-gradient(90deg, var(--ouro), var(--ouro2)); border-radius: 8px; }
+  .desconto { background: linear-gradient(135deg, #FFF8E1, #FFF3CC); border-radius: 16px; padding: 16px; font-size: 14.5px; line-height: 1.45; }
+  .desconto b { color: #A66F00; }
+
+  /* ---------- prêmios ---------- */
+  .filtros { display: flex; gap: 8px; margin: 12px 0 4px; overflow-x: auto; }
+  .filtro { border: 0; background: #ECEFF7; color: #5F6987; font-weight: 800; font-size: 13px; padding: 9px 14px; border-radius: 20px; white-space: nowrap; cursor: pointer; }
+  .filtro.ativo { background: var(--noite); color: #fff; }
+  .grade { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+  .premio { border: 1px solid #EEF0F6; border-radius: 18px; padding: 10px; display: flex; flex-direction: column; gap: 6px; background: #fff; }
+  .premio .img { height: 104px; border-radius: 13px; background: linear-gradient(135deg, #F3F0FF, #EEF2FF); display: grid; place-items: center; overflow: hidden; }
+  .premio .img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .premio b { font-size: 13.5px; line-height: 1.25; min-height: 34px; }
+  .premio .p { color: var(--roxo); font-weight: 900; font-size: 18px; }
+  .premio .p small { font-size: 11px; }
+  .ok { color: var(--verde); font-size: 12px; font-weight: 800; }
+  .falta { color: #A66F00; font-size: 12px; font-weight: 700; }
+
+  /* ---------- extrato ---------- */
+  .mov { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid #F0F2F7; }
+  .mov:last-child { border: 0; }
+  .ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none; font-size: 17px; }
+  .ic.c { background: #E2F7EC; } .ic.r { background: #F0E9FF; } .ic.e { background: #FFE9EA; } .ic.o { background: #EEF0F5; }
+  .mov .d { flex: 1; min-width: 0; }
+  .mov .d b { font-size: 14px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mov .d small { color: var(--texto2); font-size: 12px; }
+  .mov .v { font-weight: 900; font-size: 15px; }
+  .mais { color: var(--verde); } .menos { color: var(--vermelho); }
+
+  /* ---------- loja ---------- */
+  .linha-info { display: flex; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid #F0F2F7; text-decoration: none; color: inherit; }
+  .linha-info:last-child { border: 0; }
+  .linha-info .ic { background: #EEF2FF; }
+  .linha-info b { display: block; font-size: 14.5px; }
+  .linha-info small { color: var(--texto2); font-size: 12.5px; }
+  .passos { counter-reset: p; list-style: none; margin-top: 10px; }
+  .passos li { counter-increment: p; display: flex; gap: 12px; padding: 9px 0; font-size: 14px; line-height: 1.4; color: #23305A; }
+  .passos li::before { content: counter(p); width: 26px; height: 26px; border-radius: 50%; background: var(--noite); color: var(--ouro); font-weight: 900; font-size: 13px; display: grid; place-items: center; flex: none; }
+  .sair { width: 100%; margin-top: 4px; border: 1.5px solid #D7DCEA; background: #fff; color: #23305A; border-radius: 14px; padding: 14px; font-weight: 800; font-size: 14px; cursor: pointer; }
+
+  /* ---------- menu inferior ---------- */
+  .tabs { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+          border-top: 1px solid #E6E9F2; display: flex; justify-content: space-around; padding: 8px 6px calc(8px + var(--base)); z-index: 20; }
+  .tab { flex: 1; max-width: 120px; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: #8A93AE; cursor: pointer; padding: 4px 0; }
+  .tab svg { width: 24px; height: 24px; fill: #8A93AE; }
+  .tab.ativa { color: var(--azul); }
+  .tab.ativa svg { fill: var(--azul); }
+  .atualizado { text-align: center; color: #9AA3BC; font-size: 12px; margin: 4px 0 14px; }
+  .instalar { display: flex; gap: 12px; align-items: center; background: var(--noite); color: #fff; border-radius: 18px; padding: 14px 16px; margin-bottom: 16px; font-size: 13.5px; line-height: 1.35; }
+  .instalar img { width: 42px; height: 42px; border-radius: 10px; }
+  .instalar button { margin-left: auto; border: 0; background: var(--ouro); color: var(--noite); font-weight: 900; padding: 9px 12px; border-radius: 10px; font-size: 13px; }
+  .instalar .x { background: none; color: #fff; padding: 4px 6px; margin-left: 4px; font-size: 18px; }
+  @media (min-width: 520px) { .grade { grid-template-columns: repeat(3, 1fr); } }
+</style>
+</head>
+<body>
+<div id="avisoDemo" class="demo oculto">Modo demonstração — dados de exemplo</div>
+<header class="topo">
+  <div class="topo-linha">
+    <div><img class="logo" src="logo-branco.png" alt="Royal — Da obra ao agro"><small>ROYAL PONTOS</small></div>
+    <button class="btn-icone oculto" id="btnAtualizar" aria-label="Atualizar">
+      <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4a8 8 0 108 8h-2a6 6 0 11-1.76-4.24L13 11h7V4l-2.35 2.35z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ================= LOGIN ================= -->
+  <section id="telaLogin">
+    <div class="card">
+      <h1>Seus pontos na Royal</h1>
+      <p class="sub">Veja seu saldo, os prêmios que você já pode trocar e quando seus pontos vencem.</p>
+      <form id="form" autocomplete="off">
+        <label for="cpf">Seu CPF</label>
+        <input id="cpf" type="tel" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required>
+        <label for="cel">4 últimos dígitos do seu celular</label>
+        <input id="cel" type="tel" inputmode="numeric" placeholder="0000" maxlength="4" required>
+        <label class="lembrar"><input type="checkbox" id="lembrar" checked> Manter conectado neste celular</label>
+        <button class="btn" id="btnEntrar" type="submit">Ver meus pontos</button>
+        <div class="erro" id="erro"></div>
+      </form>
+      <div class="seguro"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        Seus dados ficam protegidos: só mostramos o saldo quando CPF e celular conferem.</div>
+    </div>
+    <div class="card">
+      <div class="titulo">Ainda não participa?</div>
+      <p class="sub">Peça seu cadastro no balcão da Royal. É grátis: a cada compra você ganha pontos para trocar por produtos ou descontos.</p>
+    </div>
+  </section>
+
+  <!-- ================= APP ================= -->
+  <section id="telaApp" class="oculto">
+    <!-- Início -->
+    <div id="abaInicio">
+      <div id="instalar" class="instalar oculto">
+        <img src="icone-192.png" alt="">
+        <div id="instalarTexto">Coloque o Royal Pontos na tela inicial do seu celular.</div>
+        <button id="btnInstalar">Como?</button><button class="x" id="fecharInstalar" aria-label="Fechar">×</button>
+      </div>
+      <div class="hero">
+        <div class="ola" id="ola">Olá!</div>
+        <div class="rot">SEU SALDO</div>
+        <div class="pts"><span id="saldo" style="font-size:inherit;margin:0">0</span><span>pontos</span></div>
+        <div id="chips"></div>
+      </div>
+      <div id="alerta" class="alerta oculto"></div>
+      <div class="card" id="cardMeta">
+        <div class="titulo">Seu próximo prêmio</div>
+        <div id="meta" style="margin-top:12px"></div>
+      </div>
+      <div class="card oculto" id="cardDesconto"><div class="desconto" id="desconto"></div></div>
+      <div class="atualizado" id="atualizado"></div>
+    </div>
+
+    <!-- Prêmios -->
+    <div id="abaPremios" class="oculto">
+      <div class="card">
+        <div class="titulo">Prêmios</div>
+        <p class="sub">Apresente seu CPF no balcão para trocar.</p>
+        <div class="filtros">
+          <button class="filtro ativo" data-f="todos">Todos</button>
+          <button class="filtro" data-f="posso">Já posso trocar</button>
+        </div>
+        <div class="grade" id="grade"></div>
+      </div>
+    </div>
+
+    <!-- Extrato -->
+    <div id="abaExtrato" class="oculto">
+      <div class="card">
+        <div class="titulo">Extrato</div>
+        <p class="sub">Suas últimas movimentações</p>
+        <div id="extrato" style="margin-top:6px"></div>
+      </div>
+    </div>
+
+    <!-- Loja -->
+    <div id="abaLoja" class="oculto">
+      <div class="card">
+        <div class="titulo">Royal Parafusos e EPIs</div>
+        <div id="contatos" style="margin-top:6px"></div>
+      </div>
+      <div class="card">
+        <div class="titulo">Como funciona</div>
+        <ol class="passos" id="passos"></ol>
+      </div>
+      <button class="sair" id="sair">Sair desta conta</button>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs oculto" id="tabs">
+  <button class="tab ativa" data-aba="Inicio"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Início</button>
+  <button class="tab" data-aba="Premios"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm0 13H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>Prêmios</button>
+  <button class="tab" data-aba="Extrato"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7 7h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/></svg>Extrato</button>
+  <button class="tab" data-aba="Loja"><svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>Loja</button>
+</nav>
+
+<script>
+(function () {
+  const CFG = window.ROYAL || {};
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => Number(n || 0).toLocaleString("pt-BR");
+  const moeda = (v) => Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const data = (s) => { if (!s) return ""; const [a, m, d] = String(s).substring(0, 10).split("-"); return d + "/" + m + "/" + a; };
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const DEMO = !CFG.SUPABASE_URL || !CFG.SUPABASE_KEY;
+  const CHAVE = "royalpontos.login", CACHE = "royalpontos.dados";
+  const PRESENTE = '<svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm0 13H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>';
+  let dados = null, filtro = "todos";
+
+  const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  const lerGuardado = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+  const apagar = (k) => { try { localStorage.removeItem(k); } catch (e) {} };
+
+  if (DEMO) $("avisoDemo").classList.remove("oculto");
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+
+  // ---------- login ----------
+  $("cpf").addEventListener("input", (e) => {
+    let d = e.target.value.replace(/\D/g, "").slice(0, 11), r = "";
+    for (let i = 0; i < d.length; i++) { if (i === 3 || i === 6) r += "."; if (i === 9) r += "-"; r += d[i]; }
+    e.target.value = r;
+    if (d.length === 11) $("cel").focus();
+  });
+  $("cel").addEventListener("input", (e) => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 4); });
+
+  $("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    $("erro").textContent = "";
+    const cpf = $("cpf").value.replace(/\D/g, ""), cel = $("cel").value;
+    if (cpf.length !== 11) { $("erro").textContent = "Digite os 11 números do CPF."; return; }
+    if (cel.length !== 4) { $("erro").textContent = "Digite os 4 últimos dígitos do celular."; return; }
+    $("btnEntrar").disabled = true; $("btnEntrar").textContent = "Consultando...";
+    try {
+      const r = await consultar(cpf, cel);
+      if (!r || !r.ok) { $("erro").textContent = "Não encontramos seu cadastro com esses dados. Confira ou fale com a loja."; return; }
+      if ($("lembrar").checked) guardar(CHAVE, { cpf, cel });
+      mostrar(r);
+    } catch (err) {
+      console.error(err);
+      $("erro").textContent = "Sem conexão no momento. Tente novamente em instantes.";
+    } finally {
+      $("btnEntrar").disabled = false; $("btnEntrar").textContent = "Ver meus pontos";
+    }
+  });
+
+  async function consultar(cpf, cel) {
+    if (DEMO) { await new Promise((r) => setTimeout(r, 400)); return demo(); }
+    const headers = { "Content-Type": "application/json", apikey: CFG.SUPABASE_KEY };
+    if (CFG.SUPABASE_KEY.startsWith("eyJ")) headers.Authorization = "Bearer " + CFG.SUPABASE_KEY;
+    const resp = await fetch(CFG.SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/rpc/consultar_pontos", {
+      method: "POST", headers, body: JSON.stringify({ p_cpf: cpf, p_final_celular: cel })
+    });
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    return resp.json();
+  }
+
+  async function atualizar(silencioso) {
+    const l = lerGuardado(CHAVE);
+    if (!l) return;
+    try {
+      const r = await consultar(l.cpf, l.cel);
+      if (r && r.ok) mostrar(r); else if (!silencioso) sair();
+    } catch (e) { /* sem internet: continua mostrando o último saldo guardado */ }
+  }
+
+  // ---------- telas ----------
+  function mostrar(r) {
+    dados = r;
+    r.atualizado_em = new Date().toISOString();
+    if (lerGuardado(CHAVE)) guardar(CACHE, r);
+    desenhar();
+    $("telaLogin").classList.add("oculto");
+    $("telaApp").classList.remove("oculto");
+    $("tabs").classList.remove("oculto");
+    $("btnAtualizar").classList.remove("oculto");
+    sugerirInstalar();
+  }
+
+  function desenhar() {
+    const r = dados;
+    $("ola").textContent = "Olá, " + r.nome + "! 👑";
+    $("saldo").textContent = fmt(r.saldo);
+    $("chips").innerHTML = r.proximo_vencimento ? '<span class="chip">⏰ Próximo vencimento: ' + data(r.proximo_vencimento) + "</span>" : "";
+    if (r.a_vencer_30 > 0) {
+      $("alerta").textContent = "⚠️ " + fmt(r.a_vencer_30) + " pontos vencem nos próximos 30 dias. Passe na loja e troque antes de perder!";
+      $("alerta").classList.remove("oculto");
+    } else $("alerta").classList.add("oculto");
+
+    const modo = r.modo || "AMBOS";
+    const premios = (modo === "DESCONTO" ? [] : (r.premios || [])).slice().sort((a, b) => a.pontos - b.pontos);
+    // próximo prêmio
+    const prox = premios.find((p) => p.pontos > r.saldo);
+    const podeQtd = premios.filter((p) => p.pontos <= r.saldo).length;
+    let meta = "";
+    if (premios.length === 0) meta = '<p class="sub">' + (modo === "DESCONTO" ? "Use seus pontos como desconto em qualquer compra." : "Em breve, novos prêmios.") + "</p>";
+    else {
+      if (podeQtd > 0) meta += '<p class="ok" style="font-size:14px;margin-bottom:12px">✓ Você já pode trocar ' + podeQtd + (podeQtd > 1 ? " prêmios" : " prêmio") + "!</p>";
+      if (prox) {
+        const pct = Math.min(100, Math.round((r.saldo / prox.pontos) * 100));
+        meta += '<div class="meta"><div class="img">' + img(prox) + '</div><div style="flex:1;min-width:0"><b style="font-size:14.5px">' + esc(prox.nome) +
+          '</b><div class="falta" style="margin-top:2px">Faltam ' + fmt(prox.pontos - r.saldo) + " pts de " + fmt(prox.pontos) + '</div><div class="barra"><i style="width:' + pct + '%"></i></div></div></div>';
+      } else meta += '<p class="sub">Você já pode trocar qualquer prêmio do catálogo! 🎉</p>';
+    }
+    $("meta").innerHTML = meta;
+    $("cardMeta").classList.toggle("oculto", modo === "DESCONTO" && false);
+
+    if (modo !== "PRODUTOS") {
+      const dp = Number(r.desconto_pontos || 100), dr = Number(r.desconto_reais || 5);
+      const pode = Math.floor(r.saldo / dp) * dr;
+      $("desconto").innerHTML = "💰 Cada <b>" + fmt(dp) + " pontos</b> valem <b>" + moeda(dr) + "</b> de desconto." +
+        (pode > 0 ? "<br>Hoje você pode ganhar até <b>" + moeda(pode) + "</b> de desconto na sua compra!" : "");
+      $("cardDesconto").classList.remove("oculto");
+    } else $("cardDesconto").classList.add("oculto");
+
+    $("atualizado").textContent = r.atualizado_em ? "Atualizado em " + new Date(r.atualizado_em).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "";
+
+    // prêmios
+    const lista = premios.filter((p) => filtro === "todos" || p.pontos <= r.saldo);
+    $("grade").innerHTML = lista.length === 0 ? '<p class="sub" style="grid-column:1/-1">' + (premios.length ? "Junte mais pontos para liberar seu primeiro prêmio!" : "Nenhum prêmio disponível no momento.") + "</p>" :
+      lista.map((p) => {
+        const pct = Math.min(100, Math.round((r.saldo / p.pontos) * 100)), ok = r.saldo >= p.pontos;
+        return '<div class="premio"><div class="img">' + img(p) + "</div><b>" + esc(p.nome) + '</b><div class="p">' + fmt(p.pontos) + ' <small>pts</small></div><div class="barra"><i style="width:' + pct + '%"></i></div>' +
+          (ok ? '<div class="ok">✓ Você já pode trocar!</div>' : '<div class="falta">Faltam ' + fmt(p.pontos - r.saldo) + " pts</div>") + "</div>";
+      }).join("");
+
+    // extrato
+    const nomes = { CREDITO: "Compra", RESGATE_PRODUTO: "Resgate", RESGATE_DESCONTO: "Desconto", EXPIRACAO: "Pontos vencidos", ESTORNO: "Estorno", AJUSTE: "Ajuste" };
+    const icones = { CREDITO: ["c", "🛒"], RESGATE_PRODUTO: ["r", "🎁"], RESGATE_DESCONTO: ["r", "💰"], EXPIRACAO: ["e", "⏰"], ESTORNO: ["o", "↩️"], AJUSTE: ["o", "⭐"] };
+    const ext = r.extrato || [];
+    $("extrato").innerHTML = ext.length === 0 ? '<p class="sub">Nenhuma movimentação ainda.</p>' : ext.map((m) => {
+      const ic = icones[m.tipo] || ["o", "•"];
+      const det = m.tipo === "CREDITO" && m.expira_em ? " · vale até " + data(m.expira_em) : "";
+      return '<div class="mov"><div class="ic ' + ic[0] + '">' + ic[1] + '</div><div class="d"><b>' + esc(m.descricao || nomes[m.tipo] || m.tipo) +
+        "</b><small>" + data(m.criado_em) + det + (m.estornado ? " · estornado" : "") + '</small></div><div class="v ' + (m.pontos > 0 ? "mais" : "menos") + '">' +
+        (m.pontos > 0 ? "+" : "") + fmt(m.pontos) + "</div></div>";
+    }).join("");
+
+    // loja
+    const c = [];
+    if (CFG.WHATSAPP_LOJA) c.push(info("https://wa.me/" + CFG.WHATSAPP_LOJA, "💬", "WhatsApp", "Fale com a loja"));
+    if (CFG.INSTAGRAM) c.push(info("https://instagram.com/" + CFG.INSTAGRAM, "📸", "Instagram", "@" + CFG.INSTAGRAM));
+    if (CFG.ENDERECO) c.push(info("https://maps.google.com/?q=" + encodeURIComponent("Royal Parafusos e EPIs " + CFG.ENDERECO), "📍", "Endereço", CFG.ENDERECO));
+    if (CFG.HORARIO) c.push(info(null, "🕒", "Horário", CFG.HORARIO));
+    $("contatos").innerHTML = c.join("");
+    const regra = r.regra_reais ? "A cada " + moeda(r.regra_reais) + " em compras você ganha " + fmt(r.regra_pontos || 1) + (Number(r.regra_pontos) > 1 ? " pontos." : " ponto.") : "Cada compra na loja vira pontos.";
+    const passos = ["Informe seu CPF no caixa a cada compra.", regra,
+      "Seus pontos valem por " + (r.validade_dias || 60) + " dias a partir da compra.",
+      modo === "DESCONTO" ? "Troque seus pontos por desconto no balcão." : modo === "PRODUTOS" ? "Troque seus pontos por produtos do catálogo no balcão." : "Troque por produtos do catálogo ou por desconto, direto no balcão."];
+    $("passos").innerHTML = passos.map((p) => "<li>" + esc(p) + "</li>").join("");
+  }
+
+  function img(p) { return p.imagem ? '<img src="' + esc(p.imagem) + '" alt="" loading="lazy">' : PRESENTE; }
+  function info(link, ic, t, s) {
+    const tag = link ? 'a href="' + esc(link) + '" target="_blank" rel="noopener"' : "div";
+    return "<" + tag + ' class="linha-info"><div class="ic">' + ic + "</div><div><b>" + esc(t) + "</b><small>" + esc(s) + "</small></div></" + (link ? "a" : "div") + ">";
+  }
+
+  // ---------- menu inferior ----------
+  document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("ativa", x === b));
+    ["Inicio", "Premios", "Extrato", "Loja"].forEach((a) => $("aba" + a).classList.toggle("oculto", a !== b.dataset.aba));
+    window.scrollTo(0, 0);
+  }));
+  document.querySelectorAll(".filtro").forEach((b) => b.addEventListener("click", () => {
+    filtro = b.dataset.f;
+    document.querySelectorAll(".filtro").forEach((x) => x.classList.toggle("ativo", x === b));
+    desenhar();
+  }));
+  $("btnAtualizar").addEventListener("click", () => atualizar(false));
+  $("sair").addEventListener("click", sair);
+
+  function sair() {
+    apagar(CHAVE); apagar(CACHE); dados = null;
+    $("telaApp").classList.add("oculto"); $("tabs").classList.add("oculto"); $("btnAtualizar").classList.add("oculto");
+    $("telaLogin").classList.remove("oculto");
+    $("cpf").value = ""; $("cel").value = "";
+    document.querySelector('.tab[data-aba="Inicio"]').click();
+  }
+
+  // ---------- atalho na tela inicial (opcional) ----------
+  let promptInstalar = null;
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); promptInstalar = e; sugerirInstalar(); });
+  function sugerirInstalar() {
+    const instalado = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+    if (instalado || lerGuardado("royalpontos.semInstalar") || $("telaApp").classList.contains("oculto")) return;
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (!ios && !promptInstalar) return;
+    $("btnInstalar").textContent = promptInstalar ? "Adicionar" : "Como?";
+    $("instalar").classList.remove("oculto");
+  }
+  $("btnInstalar").addEventListener("click", async () => {
+    if (promptInstalar) { promptInstalar.prompt(); await promptInstalar.userChoice; promptInstalar = null; $("instalar").classList.add("oculto"); return; }
+    $("instalarTexto").innerHTML = "No Safari, toque em <b>Compartilhar</b> (quadrado com seta ⬆) e depois em <b>Adicionar à Tela de Início</b>.";
+    $("btnInstalar").classList.add("oculto");
+  });
+  $("fecharInstalar").addEventListener("click", () => { guardar("royalpontos.semInstalar", true); $("instalar").classList.add("oculto"); });
+
+  // ---------- abrir já conectado ----------
+  const cache = lerGuardado(CACHE);
+  if (lerGuardado(CHAVE) && cache) { dados = cache; desenhar(); $("telaLogin").classList.add("oculto"); $("telaApp").classList.remove("oculto"); $("tabs").classList.remove("oculto"); $("btnAtualizar").classList.remove("oculto"); atualizar(true); sugerirInstalar(); }
+  else if (lerGuardado(CHAVE)) atualizar(true);
+
+  function demo() {
+    const hoje = new Date(), d = (n) => new Date(hoje.getTime() + n * 864e5).toISOString().substring(0, 10);
+    return {
+      ok: true, nome: "João", loja: "Royal Parafusos e EPIs", saldo: 2151, a_vencer_30: 383, proximo_vencimento: d(5),
+      modo: "AMBOS", desconto_pontos: "100", desconto_reais: "5.00", regra_reais: "1.00", regra_pontos: "1", validade_dias: "60",
+      extrato: [
+        { criado_em: d(0), tipo: "CREDITO", pontos: 150, descricao: "Compra na loja", expira_em: d(60) },
+        { criado_em: d(-3), tipo: "RESGATE_PRODUTO", pontos: -300, descricao: "1x Luva nitrílica (par)" },
+        { criado_em: d(-6), tipo: "CREDITO", pontos: 471, descricao: "NF 2673", expira_em: d(54) },
+        { criado_em: d(-9), tipo: "RESGATE_DESCONTO", pontos: -200, descricao: "Desconto de R$ 10,00" },
+        { criado_em: d(-14), tipo: "CREDITO", pontos: 298, descricao: "Compra na loja", expira_em: d(46) }
+      ],
+      premios: [
+        { nome: "Protetor auricular plug", pontos: 120 }, { nome: "Luva nitrílica (par)", pontos: 300 },
+        { nome: "Trena 5 metros", pontos: 650 }, { nome: "Lanterna de LED", pontos: 800 },
+        { nome: "Capacete de segurança", pontos: 1200 }, { nome: "Botina de segurança", pontos: 3500 }
+      ]
+    };
+  }
+})();
+</script>
+</body>
+</html>
