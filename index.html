@@ -130,7 +130,6 @@
 </style>
 </head>
 <body>
-<div id="avisoDemo" class="demo oculto">Modo demonstração — dados de exemplo</div>
 <header class="topo">
   <div class="topo-linha">
     <div><img class="logo" src="logo-branco.png" alt="Royal — Da obra ao agro"><small>ROYAL PONTOS</small></div>
@@ -249,7 +248,8 @@
   const lerGuardado = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
   const apagar = (k) => { try { localStorage.removeItem(k); } catch (e) {} };
 
-  if (DEMO) $("avisoDemo").classList.remove("oculto");
+  // apaga dados de exemplo guardados pela versão de demonstração
+  try { const c = JSON.parse(localStorage.getItem("royalpontos.dados") || "null"); if (c && c.nome === "João" && c.saldo === 2151) { localStorage.removeItem("royalpontos.dados"); localStorage.removeItem("royalpontos.login"); } } catch (e) {}
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
   // ---------- login ----------
@@ -270,6 +270,7 @@
     $("btnEntrar").disabled = true; $("btnEntrar").textContent = "Consultando...";
     try {
       const r = await consultar(cpf, cel);
+      if (r && r.implantacao) { $("erro").textContent = "O Royal Pontos está em implantação. Em breve você poderá consultar seus pontos aqui!"; return; }
       if (!r || !r.ok) { $("erro").textContent = "Não encontramos seu cadastro com esses dados. Confira ou fale com a loja."; return; }
       if ($("lembrar").checked) guardar(CHAVE, { cpf, cel });
       mostrar(r);
@@ -282,7 +283,7 @@
   });
 
   async function consultar(cpf, cel) {
-    if (DEMO) { await new Promise((r) => setTimeout(r, 400)); return demo(); }
+    if (DEMO) { await new Promise((r) => setTimeout(r, 400)); return { ok: false, implantacao: true }; }
     const headers = { "Content-Type": "application/json", apikey: CFG.SUPABASE_KEY };
     if (CFG.SUPABASE_KEY.startsWith("eyJ")) headers.Authorization = "Bearer " + CFG.SUPABASE_KEY;
     const resp = await fetch(CFG.SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/rpc/consultar_pontos", {
@@ -438,25 +439,6 @@
   if (lerGuardado(CHAVE) && cache) { dados = cache; desenhar(); $("telaLogin").classList.add("oculto"); $("telaApp").classList.remove("oculto"); $("tabs").classList.remove("oculto"); $("btnAtualizar").classList.remove("oculto"); atualizar(true); sugerirInstalar(); }
   else if (lerGuardado(CHAVE)) atualizar(true);
 
-  function demo() {
-    const hoje = new Date(), d = (n) => new Date(hoje.getTime() + n * 864e5).toISOString().substring(0, 10);
-    return {
-      ok: true, nome: "João", loja: "Royal Parafusos e EPIs", saldo: 2151, a_vencer_30: 383, proximo_vencimento: d(5),
-      modo: "AMBOS", desconto_pontos: "100", desconto_reais: "5.00", regra_reais: "1.00", regra_pontos: "1", validade_dias: "60",
-      extrato: [
-        { criado_em: d(0), tipo: "CREDITO", pontos: 150, descricao: "Compra na loja", expira_em: d(60) },
-        { criado_em: d(-3), tipo: "RESGATE_PRODUTO", pontos: -300, descricao: "1x Luva nitrílica (par)" },
-        { criado_em: d(-6), tipo: "CREDITO", pontos: 471, descricao: "NF 2673", expira_em: d(54) },
-        { criado_em: d(-9), tipo: "RESGATE_DESCONTO", pontos: -200, descricao: "Desconto de R$ 10,00" },
-        { criado_em: d(-14), tipo: "CREDITO", pontos: 298, descricao: "Compra na loja", expira_em: d(46) }
-      ],
-      premios: [
-        { nome: "Protetor auricular plug", pontos: 120 }, { nome: "Luva nitrílica (par)", pontos: 300 },
-        { nome: "Trena 5 metros", pontos: 650 }, { nome: "Lanterna de LED", pontos: 800 },
-        { nome: "Capacete de segurança", pontos: 1200 }, { nome: "Botina de segurança", pontos: 3500 }
-      ]
-    };
-  }
 })();
 </script>
 </body>
