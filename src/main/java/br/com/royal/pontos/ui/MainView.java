@@ -103,6 +103,18 @@ public class MainView extends BorderPane {
         ir(Tela.PAINEL);
         importarBlingAutomatico();
         verificarAtualizacao(false);
+        fazerBackup(false);
+        javafx.animation.Timeline backup = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.minutes(30), e -> fazerBackup(false)));
+        backup.setCycleCount(javafx.animation.Animation.INDEFINITE);
+        backup.play();
+        sceneProperty().addListener((o, a, n) -> { if (n == null) backup.stop(); });
+    }
+
+    /** Atualiza o backup em Excel dos saldos (Documentos\Royal Pontos\Backups). */
+    public void fazerBackup(boolean avisar) {
+        Ui.async(br.com.royal.pontos.service.BackupService::executar,
+                arquivo -> { if (avisar) Ui.toast("Backup salvo em " + arquivo.getParent()); });
     }
 
     private final Button atualizacao = Ui.botao("Atualização pronta — reiniciar", "btn-verde", Icones.SYNC);

@@ -123,6 +123,23 @@ public class ConfiguracoesView extends StackPane {
         atualiz.setAlignment(Pos.CENTER_LEFT);
         VBox cardAtualiz = Ui.cardTitulo("Atualizações", null, atualiz);
 
+        Button backupAgora = Ui.botao("Fazer backup agora", "btn-secundario", Icones.CHECK);
+        backupAgora.setOnAction(e -> MainView.atual().fazerBackup(true));
+        Button abrirPasta = Ui.botao("Abrir pasta", "btn-link", null);
+        abrirPasta.setOnAction(e -> {
+            try {
+                java.nio.file.Files.createDirectories(br.com.royal.pontos.service.BackupService.pasta());
+                br.com.royal.pontos.App.abrirLink(br.com.royal.pontos.service.BackupService.pasta().toUri().toString());
+            } catch (Exception erroPasta) { Ui.erro(erroPasta.getMessage()); }
+        });
+        Label textoBackup = Ui.label("O programa salva sozinho, ao abrir e a cada 30 minutos, a planilha \"Saldos Royal Pontos.xlsx\" com o saldo atual "
+                + "e os 2 saldos anteriores de cada cliente, mais todos os lançamentos. Pasta: " + br.com.royal.pontos.service.BackupService.pasta(), "texto-suave");
+        textoBackup.setWrapText(true);
+        HBox backupLinha = new HBox(14, Ui.iconeCirculo(Icones.CARTEIRA, "verde", 44), textoBackup, Ui.espaco(), new VBox(6, backupAgora, abrirPasta));
+        backupLinha.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(textoBackup, Priority.ALWAYS);
+        VBox cardBackup = Ui.cardTitulo("Backup em Excel", null, backupLinha);
+
         HBox linha1 = new HBox(20, cardRegra, cardResgate);
         HBox.setHgrow(cardRegra, Priority.ALWAYS);
         HBox.setHgrow(cardResgate, Priority.ALWAYS);
@@ -131,7 +148,7 @@ public class ConfiguracoesView extends StackPane {
         HBox barraSalvar = new HBox(salvar);
         barraSalvar.setAlignment(Pos.CENTER_RIGHT);
 
-        VBox pagina = new VBox(20, linha1, cardLoja, barraSalvar, cardUsuarios, cardBanco, cardAtualiz);
+        VBox pagina = new VBox(20, linha1, cardLoja, barraSalvar, cardUsuarios, cardBanco, cardBackup, cardAtualiz);
         pagina.getStyleClass().add("pagina");
         getChildren().add(Ui.rolagem(pagina));
         atualizarExemplo();
