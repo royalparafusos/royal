@@ -1,5 +1,5 @@
 // Royal Pontos — service worker: permite instalar o app e abrir mesmo sem internet.
-const CACHE = "royal-pontos-v2";
+const CACHE = "royal-pontos-v3";
 const ARQUIVOS = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./logo-branco.png",
                   "./icone-192.png", "./icone-512.png", "./apple-touch-icon.png"];
 

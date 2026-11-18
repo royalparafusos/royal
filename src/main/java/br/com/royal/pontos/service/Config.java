@@ -32,7 +32,7 @@ public final class Config {
 
     private static final Map<String, String> PADROES = Map.ofEntries(
             Map.entry(LOJA_NOME, "Royal Parafusos e EPIs"),
-            Map.entry(LINK_CONSULTA, ""),
+            Map.entry(LINK_CONSULTA, "https://royalparafusos.github.io/royal/"),
             Map.entry(REGRA_REAIS, "1.00"),
             Map.entry(REGRA_PONTOS, "1"),
             Map.entry(VALOR_MINIMO, "0.00"),
@@ -92,5 +92,7 @@ public final class Config {
         for (var e : PADROES.entrySet()) {
             if (!cache.containsKey(e.getKey())) set(e.getKey(), e.getValue());
         }
+        // link da consulta ficou vazio nas versões antigas: passa a usar o app do cliente publicado
+        if (get(LINK_CONSULTA).isBlank()) set(LINK_CONSULTA, PADROES.get(LINK_CONSULTA));
     }
 }
