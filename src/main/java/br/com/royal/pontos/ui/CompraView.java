@@ -96,15 +96,15 @@ public class CompraView extends StackPane {
     private void confirmar() {
         Cliente c = busca.cliente();
         BigDecimal v = Formatos.valor(valor.getText());
-        if (c == null || v == null || PontosService.calcular(v) <= 0) return;
-        try {
-            PontosService.Resultado r = PontosService.creditar(c.id(), v, descricao.getText());
+        if (c == null || v == null || PontosService.calcular(v) <= 0 || confirmar.isDisabled()) return;
+        String desc = descricao.getText();
+        confirmar.setDisable(true);
+        confirmar.setText("Lançando...");
+        Ui.async(() -> PontosService.creditar(c.id(), v, desc), r -> {
             sucesso(c, r);
             busca.recarregar();
             carregarHoje();
-        } catch (Exception ex) {
-            Ui.erro(ex.getMessage());
-        }
+        }, () -> { confirmar.setText("Confirmar e creditar pontos"); atualizarPrevia(); });
     }
 
     private void sucesso(Cliente c, PontosService.Resultado r) {

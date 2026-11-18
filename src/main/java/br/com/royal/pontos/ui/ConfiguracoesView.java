@@ -29,6 +29,7 @@ public class ConfiguracoesView extends StackPane {
     private final TextField loja = Ui.campoTexto("Nome da loja");
     private final TextField link = Ui.campoTexto("https://royalpontos.netlify.app");
     private final TableView<Usuario> usuarios = Tabelas.nova("Nenhum usuário.");
+    private final Button salvarBtn = Ui.botao("Salvar configurações", "btn-primario", Icones.CHECK);
 
     public ConfiguracoesView() {
         reais.setText(Formatos.valorTexto(Config.decimal(Config.REGRA_REAIS)));
@@ -75,7 +76,7 @@ public class ConfiguracoesView extends StackPane {
         VBox cardLoja = Ui.cardTitulo("Loja e consulta do cliente", null,
                 Ui.campo("Nome da loja (aparece nas mensagens)", loja), Ui.campo("Link da página de consulta do cliente", link), dicaLink);
 
-        Button salvar = Ui.botao("Salvar configurações", "btn-primario", Icones.CHECK);
+        Button salvar = salvarBtn;
         salvar.getStyleClass().add("btn-grande");
         salvar.setOnAction(e -> salvar());
 
@@ -156,16 +157,21 @@ public class ConfiguracoesView extends StackPane {
             if (r == null || r.signum() <= 0 || p <= 0) throw new IllegalArgumentException("Regra de pontuação inválida.");
             if (v < 1) throw new IllegalArgumentException("A validade precisa ser de pelo menos 1 dia.");
             if (dp <= 0 || dr == null || dr.signum() <= 0) throw new IllegalArgumentException("Conversão para desconto inválida.");
-            Config.set(Config.REGRA_REAIS, r.toPlainString());
-            Config.set(Config.REGRA_PONTOS, String.valueOf(p));
-            Config.set(Config.VALOR_MINIMO, (min == null ? BigDecimal.ZERO : min).toPlainString());
-            Config.set(Config.VALIDADE_DIAS, String.valueOf(v));
-            Config.set(Config.MODO_RESGATE, rProdutos.isSelected() ? "PRODUTOS" : rDesconto.isSelected() ? "DESCONTO" : "AMBOS");
-            Config.set(Config.DESCONTO_PONTOS, String.valueOf(dp));
-            Config.set(Config.DESCONTO_REAIS, dr.toPlainString());
-            Config.set(Config.LOJA_NOME, loja.getText().trim());
-            Config.set(Config.LINK_CONSULTA, link.getText().trim());
-            Ui.toast("Configurações salvas. A nova validade vale para os próximos lançamentos.");
+            java.util.Map<String, String> valores = new java.util.LinkedHashMap<>();
+            valores.put(Config.REGRA_REAIS, r.toPlainString());
+            valores.put(Config.REGRA_PONTOS, String.valueOf(p));
+            valores.put(Config.VALOR_MINIMO, (min == null ? BigDecimal.ZERO : min).toPlainString());
+            valores.put(Config.VALIDADE_DIAS, String.valueOf(v));
+            valores.put(Config.MODO_RESGATE, rProdutos.isSelected() ? "PRODUTOS" : rDesconto.isSelected() ? "DESCONTO" : "AMBOS");
+            valores.put(Config.DESCONTO_PONTOS, String.valueOf(dp));
+            valores.put(Config.DESCONTO_REAIS, dr.toPlainString());
+            valores.put(Config.LOJA_NOME, loja.getText().trim());
+            valores.put(Config.LINK_CONSULTA, link.getText().trim());
+            salvarBtn.setDisable(true);
+            salvarBtn.setText("Salvando...");
+            Ui.async(() -> { Config.setVarios(valores); return true; },
+                    ok -> Ui.toast("Configurações salvas. A nova validade vale para os próximos lançamentos."),
+                    () -> { salvarBtn.setDisable(false); salvarBtn.setText("Salvar configurações"); });
         } catch (NumberFormatException e) {
             Ui.erro("Preencha todos os números corretamente.");
         } catch (Exception e) {

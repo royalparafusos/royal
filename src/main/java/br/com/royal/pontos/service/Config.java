@@ -72,6 +72,18 @@ public final class Config {
         cache.put(chave, valor);
     }
 
+    /** Grava várias configurações de uma vez (uma única ida ao banco). */
+    public static synchronized void setVarios(java.util.Map<String, String> valores) {
+        Db.tx(c -> {
+            for (var e : valores.entrySet()) {
+                int n = Db.executar(c, "UPDATE configuracoes SET valor = ? WHERE chave = ?", e.getValue(), e.getKey());
+                if (n == 0) Db.executar(c, "INSERT INTO configuracoes(chave, valor) VALUES (?, ?)", e.getKey(), e.getValue());
+            }
+            return null;
+        });
+        cache.putAll(valores);
+    }
+
     public static int inteiro(String chave) {
         try { return Integer.parseInt(get(chave).trim()); } catch (Exception e) { return Integer.parseInt(PADROES.getOrDefault(chave, "0")); }
     }

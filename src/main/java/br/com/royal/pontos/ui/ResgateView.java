@@ -161,15 +161,14 @@ public class ResgateView extends StackPane {
         ButtonType ok = new ButtonType("Confirmar resgate", ButtonBar.ButtonData.OK_DONE);
         d.getDialogPane().getButtonTypes().addAll(ok, new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE));
         if (d.showAndWait().filter(b -> b == ok).isEmpty()) return;
-        try {
-            PontosService.Resultado r = PontosService.resgatarProduto(cliente.id(), p.id(), qtd.getValue());
-            comprovante("Resgate confirmado!", qtd.getValue() + "x " + p.nome(), r,
+        long cid = cliente.id();
+        int quantidade = qtd.getValue();
+        Ui.async(() -> new Object[]{PontosService.resgatarProduto(cid, p.id(), quantidade), PremioService.listar(false, "")}, res -> {
+            premios = castLista(res[1]);
+            comprovante("Resgate confirmado!", quantidade + "x " + p.nome(), (PontosService.Resultado) res[0],
                     "Entregue o produto ao cliente e guarde o código do comprovante.");
-            premios = PremioService.listar(false, "");
             busca.recarregar();
-        } catch (Exception ex) {
-            Ui.erro(ex.getMessage());
-        }
+        });
     }
 
     // ------------------------------------------------------------------ desconto
@@ -209,14 +208,13 @@ public class ResgateView extends StackPane {
             int usar = (int) Math.round(slider.getValue()) * bloco;
             if (!Ui.confirmar("Gerar cupom", "Usar " + Formatos.pontos(usar) + " de " + cliente.nome() + " para gerar "
                     + Formatos.moeda(PontosService.valorDesconto(usar)) + " de desconto?")) return;
-            try {
-                PontosService.Resultado r = PontosService.resgatarDesconto(cliente.id(), usar);
+            long cid = cliente.id();
+            gerar.setDisable(true);
+            Ui.async(() -> PontosService.resgatarDesconto(cid, usar), r -> {
                 comprovante("Cupom gerado!", "Desconto de " + Formatos.moeda(r.valor()), r,
                         "Aplique o desconto no caixa agora e anote o código do cupom na venda.");
                 busca.recarregar();
-            } catch (Exception ex) {
-                Ui.erro(ex.getMessage());
-            }
+            }, () -> gerar.setDisable(false));
         });
         VBox previa = new VBox(4, Ui.label("Quantos pontos usar?", "texto-suave"), pts, valor);
         previa.getStyleClass().add("previa-box");
@@ -227,6 +225,9 @@ public class ResgateView extends StackPane {
         card.setMaxWidth(640);
         areaDesconto.getChildren().setAll(card);
     }
+
+    @SuppressWarnings("unchecked")
+    private static List<Premio> castLista(Object o) { return (List<Premio>) o; }
 
     // ------------------------------------------------------------------ comprovante
 

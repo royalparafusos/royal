@@ -49,7 +49,9 @@ public class ClienteBusca extends VBox {
     }
 
     public void recarregar() {
-        if (cliente != null) selecionar(ClienteService.porId(cliente.id()));
+        if (cliente == null) return;
+        long id = cliente.id();
+        Ui.async(() -> ClienteService.porId(id), c -> { if (c != null) selecionar(c); });
     }
 
     private void limpar() {

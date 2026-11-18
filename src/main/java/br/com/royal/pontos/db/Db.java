@@ -24,6 +24,7 @@ public final class Db {
     private Db() {}
 
     public static void configurar(AppConfig cfg) {
+        fecharTudo();
         url = cfg.jdbcUrl();
         nuvem = cfg.isNuvem();
         usuario = nuvem ? cfg.usuario() : "sa";
@@ -37,8 +38,99 @@ public final class Db {
 
     public static boolean isNuvem() { return nuvem; }
 
+    // ------------------------------------------------------------------ conexões reaproveitadas
+    // Abrir uma conexão com a nuvem leva ~0,5 s (internet + segurança). Por isso as conexões
+    // ficam abertas e são reaproveitadas, deixando cada operação muito mais rápida.
+
+    private static final java.util.Deque<Connection> livres = new java.util.ArrayDeque<>();
+    private static final java.util.Map<Connection, Long> ultimoUso = new java.util.IdentityHashMap<>();
+    private static final int MAX_LIVRES = 4;
+
     public static Connection conectar() throws SQLException {
-        return DriverManager.getConnection(url, usuario, senha);
+        Connection real = null;
+        while (true) {
+            Long usado;
+            synchronized (livres) {
+                real = livres.pollFirst();
+                usado = real == null ? null : ultimoUso.remove(real);
+            }
+            if (real == null) break;
+            if (valida(real, usado)) break;
+            fecharQuieto(real);
+        }
+        if (real == null) real = DriverManager.getConnection(url, usuario, senha);
+        return embrulhar(real);
+    }
+
+    /** Só testa a conexão se ela ficou parada mais de 30 s (evita ida e volta desnecessária). */
+    private static boolean valida(Connection c, Long usado) {
+        try {
+            if (c.isClosed()) return false;
+            if (usado != null && System.currentTimeMillis() - usado < 30_000) return true;
+            return c.isValid(5);
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private static void devolver(Connection real) {
+        try {
+            if (real.isClosed()) return;
+            if (!real.getAutoCommit()) { real.rollback(); real.setAutoCommit(true); }
+        } catch (SQLException e) {
+            fecharQuieto(real);
+            return;
+        }
+        synchronized (livres) {
+            if (livres.size() < MAX_LIVRES) {
+                livres.addFirst(real);
+                ultimoUso.put(real, System.currentTimeMillis());
+                return;
+            }
+        }
+        fecharQuieto(real);
+    }
+
+    private static void fecharQuieto(Connection c) {
+        try { c.close(); } catch (Exception ignored) { }
+    }
+
+    /** Descarta todas as conexões guardadas (ex.: ao trocar de banco). */
+    public static void fecharTudo() {
+        synchronized (livres) {
+            livres.forEach(Db::fecharQuieto);
+            livres.clear();
+            ultimoUso.clear();
+        }
+    }
+
+    /** Conexão "embrulhada": ao chamar close(), ela volta para a reserva em vez de ser fechada. */
+    private static Connection embrulhar(Connection real) {
+        final boolean[] fechada = {false};
+        return (Connection) java.lang.reflect.Proxy.newProxyInstance(Db.class.getClassLoader(), new Class<?>[]{Connection.class},
+                (proxy, metodo, args) -> {
+                    switch (metodo.getName()) {
+                        case "close":
+                            if (!fechada[0]) { fechada[0] = true; devolver(real); }
+                            return null;
+                        case "isClosed":
+                            return fechada[0] || real.isClosed();
+                        case "unwrap":
+                            return real.unwrap((Class<?>) args[0]);
+                        default:
+                            if (fechada[0]) throw new SQLException("Conexão já devolvida");
+                            try {
+                                return metodo.invoke(real, args);
+                            } catch (java.lang.reflect.InvocationTargetException e) {
+                                Throwable causa = e.getCause();
+                                if (causa instanceof SQLException se && se.getSQLState() != null && se.getSQLState().startsWith("08")) {
+                                    fechada[0] = true; // conexão caiu: não volta para a reserva
+                                    fecharQuieto(real);
+                                }
+                                throw causa;
+                            }
+                    }
+                });
     }
 
     public static void testar(AppConfig cfg) throws SQLException {
