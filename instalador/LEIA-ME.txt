@@ -1,0 +1,18 @@
+ROYAL PONTOS - INSTALACAO EM OUTRO COMPUTADOR DA LOJA
+=====================================================
+
+1. Copie esta pasta para Documentos (ex.: Documentos\Royal Pontos).
+2. De dois cliques em INSTALAR.
+   Se o Windows mostrar "O Windows protegeu o computador", clique em
+   "Mais informacoes" e depois em "Executar assim mesmo".
+3. Aguarde (a 1a vez baixa o Java, ~190 MB). No final o programa abre sozinho
+   e cria o atalho "Royal Pontos" na Area de Trabalho.
+4. Na tela de login, clique em "Banco: este computador (demonstracao)" e
+   escolha "Na nuvem - Supabase". Preencha host, porta, banco, usuario e a
+   senha do banco (os mesmos do computador principal). Testar conexao > Salvar.
+   ATALHO: em vez de digitar, copie o arquivo
+   C:\Users\<usuario>\RoyalPontos\config.properties do computador principal
+   para a mesma pasta neste computador.
+5. Entre com o seu usuario e senha do Royal Pontos.
+
+Depois disso o programa se atualiza sozinho. Nao precisa instalar de novo.
