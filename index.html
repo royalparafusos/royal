@@ -375,9 +375,9 @@
 
     // loja
     const c = [];
-    if (CFG.WHATSAPP_LOJA) c.push(info("https://wa.me/" + CFG.WHATSAPP_LOJA, "💬", "WhatsApp", "Fale com a loja"));
+    if (CFG.WHATSAPP_LOJA) c.push(info("https://wa.me/" + CFG.WHATSAPP_LOJA, "💬", "WhatsApp", "(38) 9 9936-5989 · fale com a loja"));
     if (CFG.INSTAGRAM) c.push(info("https://instagram.com/" + CFG.INSTAGRAM, "📸", "Instagram", "@" + CFG.INSTAGRAM));
-    if (CFG.ENDERECO) c.push(info("https://maps.google.com/?q=" + encodeURIComponent("Royal Parafusos e EPIs " + CFG.ENDERECO), "📍", "Endereço", CFG.ENDERECO));
+    if (CFG.ENDERECO) c.push(info("https://maps.google.com/?q=" + encodeURIComponent(CFG.ENDERECO), "📍", "Endereço", CFG.ENDERECO));
     if (CFG.HORARIO) c.push(info(null, "🕒", "Horário", CFG.HORARIO));
     $("contatos").innerHTML = c.join("");
     const regra = r.regra_reais ? "A cada " + moeda(r.regra_reais) + " em compras você ganha " + fmt(r.regra_pontos || 1) + (Number(r.regra_pontos) > 1 ? " pontos." : " ponto.") : "Cada compra na loja vira pontos.";

@@ -7,8 +7,8 @@
 window.ROYAL = {
   SUPABASE_URL: "",
   SUPABASE_KEY: "",
-  WHATSAPP_LOJA: "",            // ex.: "5538999999999"
+  WHATSAPP_LOJA: "5538999365989",
   INSTAGRAM: "royalparafusos",
-  ENDERECO: "Salinas - MG",
-  HORARIO: ""                   // ex.: "Seg a Sex 7h–18h · Sáb 7h–12h"
+  ENDERECO: "R. Mendo Corrêa, 434 - Panorama, Salinas - MG",
+  HORARIO: "07:00 às 17:30"
 };
