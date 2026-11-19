@@ -1,28 +1,28 @@
 7898390942320 LUVA PU PRETA T10 XG CA15272 KALIPSO
 7897801300978 FITA ISOLANTE 20MX19MM KRONA
-   candidatos: 0
-   SEM IMAGEM
+   candidatos: 15
+   OK link: https://tumelerosaintgobain.vtexassets.com/arquivos/ids/190909-800-800?v=637654284684900000&width=800&height=800&a
 7908024214935 LAMPADA LED ALTA POTENCIA 20W 6500K E27 BIVOLT 1600LM G2 BRL CRISTALLUX
-   candidatos: 0
-   SEM IMAGEM
+   candidatos: 15
+   OK link: https://storage.cristallux.com.br/images/2024/08/lampada-led-alta-potencia-20w-6500k-e27-bivolt-1600lm-g2-brl-prod
 7908024213921 LAMPADA LED ALTA POTENCIA 20W 3000K E27 BIVOLT 1600LM G2 BRL CRISTALLUX
-   candidatos: 0
-   SEM IMAGEM
+   candidatos: 16
+   OK link: https://www.boxlar.com.br/wp-content/uploads/2025/12/39158.jpg
 7896544402119 GENCO TABLETES MULTIPLA ACAO 3 EM 1 T-200 200G
-   candidatos: 26
-   OK página: https://telhanorte.vtexassets.com/arquivos/android.png
+   candidatos: 2
+   OK link: https://telhanorte.vtexassets.com/arquivos/ids/329946-800-800
 7899612796875 ESPATULA ACO INOXIDAVEL LISA 100MM SPARTA
-   candidatos: 0
-   SEM IMAGEM
+   candidatos: 4
+   OK link: https://img.lojadomecanico.com.br/1000/31/276/105158/Espatula-de-Aco-Inoxidavel-de-4-Pol-com--sparta-8521851.JPG
 7899612796868 ESPATULA ACO INOXIDAVEL LISA 80MM SPARTA
-   candidatos: 0
-   SEM IMAGEM
+   candidatos: 4
+   OK link: https://img.lojadomecanico.com.br/1000/31/276/105156/Espatula-de-Aco-Inoxidavel-de-3-18-Pol-C-sparta-8521551.JPG
 7899612796844 ESPATULA ACO INOXIDAVEL LISA 50MM SPARTA
-   candidatos: 0
-   SEM IMAGEM
+   candidatos: 4
+   OK link: https://img.lojadomecanico.com.br/1000/31/276/105153/Espatula-de-Aco-Inoxidavel-de-2-Pol-Com--sparta-8520951.JPG
 7899612796851 ESPATULA ACO INOXIDAVEL LISA 60MM SPARTA
-   candidatos: 0
-   SEM IMAGEM
+   candidatos: 4
+   OK link: https://img.lojadomecanico.com.br/1000/31/276/343203/1660927592875.JPG
 7899389012079 ESPATULA PLASTICA DENTADA 10 859 CONDOR
 7899389012048 ESPATULA PLASTICA LISA 10 858 CONDOR
-4 imagens prontas
+11 imagens prontas
