@@ -1,0 +1,32 @@
+# Baixa as fotos dos prêmios (premios/fontes.json) e publica no app do cliente.
+name: Fotos dos prêmios
+
+on:
+  push:
+    branches: [main]
+    paths: ['premios/**', '.github/workflows/premios.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fotos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install requests pillow
+      - run: python premios/gerar_imagens.py
+      - name: Guardar fotos no repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add consulta-cliente/premios
+          git diff --cached --quiet || (git commit -m "Fotos dos prêmios atualizadas" && git push)
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./consulta-cliente
+          publish_branch: gh-pages
