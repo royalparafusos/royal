@@ -89,7 +89,10 @@ public class MainView extends BorderPane {
         atualizacao.setOnAction(e -> {
             if (!Atualizador.reiniciar()) Ui.info("Atualização pronta", "Feche o Royal Pontos e abra de novo para usar a versão nova.");
         });
-        HBox topo = new HBox(16, new VBox(2, titulo, subtitulo), Ui.espaco(), atualizacao, banco, atalho);
+        Button recarregar = Ui.botao("Atualizar", "btn-secundario", Icones.SYNC);
+        recarregar.setTooltip(new Tooltip("Recarrega os dados da tela (atalho: F5)"));
+        recarregar.setOnAction(e -> atualizarTudo());
+        HBox topo = new HBox(16, new VBox(2, titulo, subtitulo), Ui.espaco(), atualizacao, banco, recarregar, atalho);
         topo.setAlignment(Pos.CENTER_LEFT);
         topo.getStyleClass().add("topo");
 
@@ -110,7 +113,10 @@ public class MainView extends BorderPane {
                 new javafx.animation.KeyFrame(javafx.util.Duration.minutes(30), e -> fazerBackup(false)));
         backup.setCycleCount(javafx.animation.Animation.INDEFINITE);
         backup.play();
-        sceneProperty().addListener((o, a, n) -> { if (n == null) backup.stop(); });
+        sceneProperty().addListener((o, a, n) -> {
+            if (n == null) { backup.stop(); return; }
+            n.getAccelerators().put(new javafx.scene.input.KeyCodeCombination(javafx.scene.input.KeyCode.F5), this::atualizarTudo);
+        });
     }
 
     /** Atualiza o backup em Excel dos saldos (Documentos\Royal Pontos\Backups). */
@@ -135,6 +141,32 @@ public class MainView extends BorderPane {
         });
     }
 
+    private Tela telaAtual = Tela.PAINEL;
+    private String paramAtual;
+    private Long clienteAtual;
+    private long ultimaAtualizacao;
+
+    /** Botão "Atualizar" / F5: recarrega configurações, fotos, Bling, versão nova e a tela aberta, sem fechar o programa. */
+    public void atualizarTudo() {
+        long agora = System.currentTimeMillis();
+        if (agora - ultimaAtualizacao < 1500) return;
+        ultimaAtualizacao = agora;
+        Ui.async(() -> {
+            Config.recarregar();
+            try { return br.com.royal.pontos.service.FotosPremios.aplicar(); } catch (Exception ex) { return 0; }
+        }, n -> {
+            recarregarTela();
+            Ui.toast(n > 0 ? "Atualizado — fotos novas em " + n + " prêmio(s)" : "Dados atualizados");
+        });
+        importarBlingAutomatico();
+        verificarAtualizacao(false);
+    }
+
+    private void recarregarTela() {
+        if (clienteAtual != null) abrirCliente(clienteAtual);
+        else ir(telaAtual, paramAtual);
+    }
+
     private Button nav(Tela tela, String texto, String icone) {
         Button b = new Button(texto, Ui.icone(icone, 18));
         b.getStyleClass().add("nav");
@@ -148,6 +180,7 @@ public class MainView extends BorderPane {
 
     /** Navega para uma tela. "param" pode ser um CPF (compra/resgate). */
     public void ir(Tela tela, String param) {
+        telaAtual = tela; paramAtual = param; clienteAtual = null;
         botoes.values().forEach(b -> b.getStyleClass().remove("nav-ativo"));
         Button b = botoes.get(tela);
         if (b != null) b.getStyleClass().add("nav-ativo");
@@ -163,6 +196,7 @@ public class MainView extends BorderPane {
     }
 
     public void abrirCliente(long clienteId) {
+        clienteAtual = clienteId;
         botoes.values().forEach(b -> b.getStyleClass().remove("nav-ativo"));
         botoes.get(Tela.CLIENTES).getStyleClass().add("nav-ativo");
         mostrar("Ficha do cliente", "Saldo, validade e extrato de pontos", new ClienteDetalheView(clienteId));
