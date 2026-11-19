@@ -1,0 +1,57 @@
+{
+ "itens": [
+  {
+   "gtin": "7898390942320",
+   "nome": "LUVA PU PRETA T10 XG CA15272 KALIPSO",
+   "bling": [
+    "16255199760",
+    "16255205275",
+    "16255204323"
+   ],
+   "palavras": [
+    [
+     "luva"
+    ],
+    [
+     "pu"
+    ]
+   ],
+   "imagem": "premios/7898390942320.jpg"
+  },
+  {
+   "gtin": "7899389012079",
+   "nome": "ESPATULA PLASTICA DENTADA 10 859 CONDOR",
+   "bling": [
+    "16249876035"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "dentada"
+    ]
+   ],
+   "imagem": "premios/7899389012079.jpg"
+  },
+  {
+   "gtin": "7899389012048",
+   "nome": "ESPATULA PLASTICA LISA 10 858 CONDOR",
+   "bling": [
+    "16249875239"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "plastica"
+    ],
+    [
+     "lisa"
+    ]
+   ],
+   "imagem": "premios/7899389012048.jpg"
+  }
+ ]
+}
