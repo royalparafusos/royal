@@ -58,7 +58,23 @@ public final class PontosService {
 
     public static String regraTexto() {
         return "A cada " + Formatos.moeda(Config.decimal(Config.REGRA_REAIS)) + " em compras = "
-                + Config.inteiro(Config.REGRA_PONTOS) + " ponto(s) · validade de " + Config.inteiro(Config.VALIDADE_DIAS) + " dias";
+                + Config.inteiro(Config.REGRA_PONTOS) + " ponto(s) · validade de " + Config.inteiro(Config.VALIDADE_DIAS) + " dias"
+                + (Config.bool(Config.VALIDADE_RENOVA) ? " após a última compra" : "");
+    }
+
+    /** Compra mínima exigida no dia do resgate (zero = sem mínimo). */
+    public static BigDecimal compraMinimaResgate() {
+        BigDecimal v = Config.decimal(Config.RESGATE_COMPRA_MINIMA);
+        return v.signum() < 0 ? BigDecimal.ZERO : v;
+    }
+
+    private static String validarCompraDoResgate(BigDecimal compra) {
+        BigDecimal minimo = compraMinimaResgate();
+        if (minimo.signum() == 0) return "";
+        if (compra == null || compra.compareTo(minimo) < 0) {
+            throw new DbException("Para resgatar, a compra de hoje precisa ser de pelo menos " + Formatos.moeda(minimo) + ".");
+        }
+        return " · compra de " + Formatos.moeda(compra);
     }
 
     // ------------------------------------------------------------------ saldo
@@ -113,6 +129,11 @@ public final class PontosService {
                 clienteId, Movimento.CREDITO, pts, valor, pts, validade,
                 descricao == null || descricao.isBlank() ? "Compra na loja" : descricao.trim(),
                 origem, blingPedidoId, Sessao.id(), quando);
+        if (Config.bool(Config.VALIDADE_RENOVA)) {
+            // compra nova renova a validade de todos os pontos ainda válidos do cliente
+            Db.executar(c, "UPDATE movimentos SET expira_em = ? WHERE cliente_id = ? AND pontos_restantes > 0 "
+                    + "AND expira_em >= ? AND expira_em < ?", validade, clienteId, LocalDate.now(), validade);
+        }
         return new Resultado(id, pts, null, valor, validade, saldo(c, clienteId));
     }
 
@@ -137,9 +158,10 @@ public final class PontosService {
         }
     }
 
-    public static Resultado resgatarProduto(long clienteId, long premioId, int quantidade) {
+    public static Resultado resgatarProduto(long clienteId, long premioId, int quantidade, BigDecimal compraDoDia) {
         if (!Config.aceitaProdutos()) throw new DbException("Resgate por produtos está desativado nas configurações.");
         if (quantidade < 1) throw new DbException("Quantidade inválida.");
+        String sufixo = validarCompraDoResgate(compraDoDia);
         return Db.tx(c -> {
             Premio p = Db.um(c, "SELECT * FROM premios WHERE id = ?" + (Db.isNuvem() ? " FOR UPDATE" : ""), PremioService::map, premioId);
             if (p == null || !p.ativo()) throw new DbException("Prêmio indisponível.");
@@ -150,7 +172,7 @@ public final class PontosService {
             String codigo = Senha.codigo("RP");
             long id = Db.inserir(c, "INSERT INTO movimentos(cliente_id, tipo, pontos, descricao, cupom, premio_id, quantidade, "
                             + "usuario_id, criado_em) VALUES (?,?,?,?,?,?,?,?,?)",
-                    clienteId, Movimento.RESGATE_PRODUTO, -total, quantidade + "x " + p.nome(), codigo, premioId,
+                    clienteId, Movimento.RESGATE_PRODUTO, -total, quantidade + "x " + p.nome() + sufixo, codigo, premioId,
                     quantidade, Sessao.id(), LocalDateTime.now());
             return new Resultado(id, total, codigo, null, null, saldo(c, clienteId));
         });
@@ -161,8 +183,9 @@ public final class PontosService {
         return Config.decimal(Config.DESCONTO_REAIS).multiply(BigDecimal.valueOf(pontos / bloco)).setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static Resultado resgatarDesconto(long clienteId, int pontos) {
+    public static Resultado resgatarDesconto(long clienteId, int pontos, BigDecimal compraDoDia) {
         if (!Config.aceitaDesconto()) throw new DbException("Resgate em desconto está desativado nas configurações.");
+        String sufixo = validarCompraDoResgate(compraDoDia);
         int bloco = Math.max(1, Config.inteiro(Config.DESCONTO_PONTOS));
         if (pontos < bloco || pontos % bloco != 0) throw new DbException("Os pontos devem ser múltiplos de " + bloco + ".");
         BigDecimal valor = valorDesconto(pontos);
@@ -171,7 +194,7 @@ public final class PontosService {
             String cupom = Senha.codigo("DESC");
             long id = Db.inserir(c, "INSERT INTO movimentos(cliente_id, tipo, pontos, valor, descricao, cupom, usuario_id, criado_em) "
                             + "VALUES (?,?,?,?,?,?,?,?)",
-                    clienteId, Movimento.RESGATE_DESCONTO, -pontos, valor, "Desconto de " + Formatos.moeda(valor),
+                    clienteId, Movimento.RESGATE_DESCONTO, -pontos, valor, "Desconto de " + Formatos.moeda(valor) + sufixo,
                     cupom, Sessao.id(), LocalDateTime.now());
             return new Resultado(id, pontos, cupom, valor, null, saldo(c, clienteId));
         });

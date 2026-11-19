@@ -383,7 +383,8 @@
     $("contatos").innerHTML = c.join("");
     const regra = r.regra_reais ? "A cada " + moeda(r.regra_reais) + " em compras você ganha " + fmt(r.regra_pontos || 1) + (Number(r.regra_pontos) > 1 ? " pontos." : " ponto.") : "Cada compra na loja vira pontos.";
     const passos = ["Informe seu CPF no caixa a cada compra.", regra,
-      "Seus pontos valem por " + (r.validade_dias || 60) + " dias a partir da compra.",
+      "Seus pontos valem por " + (r.validade_dias || 60) + " dias e renovam a cada nova compra.",
+      "Resgate com compra mínima de R$ 40,00 no dia.",
       modo === "DESCONTO" ? "Troque seus pontos por desconto no balcão." : modo === "PRODUTOS" ? "Troque seus pontos por produtos do catálogo no balcão." : "Troque por produtos do catálogo ou por desconto, direto no balcão."];
     $("passos").innerHTML = passos.map((p) => "<li>" + esc(p) + "</li>").join("");
   }

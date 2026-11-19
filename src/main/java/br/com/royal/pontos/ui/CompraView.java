@@ -53,7 +53,8 @@ public class CompraView extends StackPane {
         // ---- lateral
         VBox regra = Ui.cardTitulo("Regra atual", null,
                 linhaRegra(Icones.CARTEIRA, "A cada " + Formatos.moeda(Config.decimal(Config.REGRA_REAIS)), Config.inteiro(Config.REGRA_PONTOS) + " ponto(s)"),
-                linhaRegra(Icones.RELOGIO, "Validade dos pontos", Config.inteiro(Config.VALIDADE_DIAS) + " dias"),
+                linhaRegra(Icones.RELOGIO, "Validade dos pontos", Config.inteiro(Config.VALIDADE_DIAS) + " dias"
+                        + (Config.bool(Config.VALIDADE_RENOVA) ? " após a última compra" : "")),
                 linhaRegra(Icones.TAG, "Compra mínima", Formatos.moeda(Config.decimal(Config.VALOR_MINIMO))));
         VBox cardHoje = Ui.cardTitulo("Lançados hoje", null, hoje);
         VBox direita = new VBox(20, regra, cardHoje);

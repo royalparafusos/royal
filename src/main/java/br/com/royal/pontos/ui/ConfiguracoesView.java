@@ -26,6 +26,8 @@ public class ConfiguracoesView extends StackPane {
     private final RadioButton rAmbos = new RadioButton("Produtos e desconto (o cliente escolhe)");
     private final TextField descPontos = Ui.campoNumero("100", false);
     private final TextField descReais = Ui.campoNumero("5,00", true);
+    private final TextField compraMinResgate = Ui.campoNumero("40,00", true);
+    private final CheckBox renovaValidade = new CheckBox("Renovar a validade a cada compra (os pontos vencem X dias após a última compra)");
     private final TextField loja = Ui.campoTexto("Nome da loja");
     private final TextField link = Ui.campoTexto("https://royalpontos.netlify.app");
     private final TableView<Usuario> usuarios = Tabelas.nova("Nenhum usuário.");
@@ -38,6 +40,11 @@ public class ConfiguracoesView extends StackPane {
         validade.setText(String.valueOf(Config.inteiro(Config.VALIDADE_DIAS)));
         descPontos.setText(String.valueOf(Config.inteiro(Config.DESCONTO_PONTOS)));
         descReais.setText(Formatos.valorTexto(Config.decimal(Config.DESCONTO_REAIS)));
+        compraMinResgate.setText(Formatos.valorTexto(Config.decimal(Config.RESGATE_COMPRA_MINIMA)));
+        renovaValidade.setSelected(Config.bool(Config.VALIDADE_RENOVA));
+        renovaValidade.setWrapText(true);
+        renovaValidade.selectedProperty().addListener((o, a, n) -> atualizarExemplo());
+        compraMinResgate.setPrefWidth(180);
         loja.setText(Config.get(Config.LOJA_NOME));
         link.setText(Config.get(Config.LINK_CONSULTA));
         ToggleGroup g = new ToggleGroup();
@@ -61,13 +68,15 @@ public class ConfiguracoesView extends StackPane {
         HBox outros = new HBox(18, Ui.campo("Compra mínima para pontuar (R$)", minimo), Ui.campo("Validade dos pontos (dias)", validade));
         VBox ex = new VBox(2, Ui.label("Simulação", "texto-suave"), exemplo);
         ex.getStyleClass().add("previa-box");
-        VBox cardRegra = Ui.cardTitulo("Regra de pontuação", "Vale para o balcão e para as vendas importadas do Bling", regraLinha, outros, ex);
+        VBox cardRegra = Ui.cardTitulo("Regra de pontuação", "Vale para o balcão e para as vendas importadas do Bling", regraLinha, outros, renovaValidade, ex);
 
         // ---- resgate
         HBox descLinha = new HBox(18, Ui.campo("Pontos", descPontos), Ui.campo("Valem (R$ de desconto)", descReais));
         descLinha.disableProperty().bind(rProdutos.selectedProperty());
         VBox cardResgate = Ui.cardTitulo("Forma de resgate", "Escolha como o cliente pode usar os pontos",
-                new VBox(10, rAmbos, rProdutos, rDesconto), Ui.label("Conversão para desconto", "card-titulo"), descLinha);
+                new VBox(10, rAmbos, rProdutos, rDesconto),
+                Ui.campo("Compra mínima no dia do resgate (R$) — 0 = sem mínimo", compraMinResgate),
+                Ui.label("Conversão para desconto", "card-titulo"), descLinha);
 
         // ---- loja
         Label dicaLink = Ui.label("Endereço onde você publicou a página de consulta (pasta consulta-cliente). "
@@ -162,11 +171,13 @@ public class ConfiguracoesView extends StackPane {
         if (r == null || r.signum() <= 0 || p <= 0) { exemplo.setText("Preencha a regra para ver a simulação."); return; }
         BigDecimal compra = new BigDecimal("150.00");
         long pts = compra.divide(r, 0, RoundingMode.FLOOR).longValue() * p;
-        exemplo.setText("Compra de R$ 150,00 → " + Formatos.pontos(pts) + "  ·  válidos por " + validade.getText() + " dias");
+        exemplo.setText("Compra de R$ 150,00 → " + Formatos.pontos(pts) + "  ·  válidos por " + validade.getText() + " dias"
+                + (renovaValidade.isSelected() ? " após a última compra" : ""));
     }
 
     private void salvar() {
         BigDecimal r = Formatos.valor(reais.getText()), min = Formatos.valor(minimo.getText()), dr = Formatos.valor(descReais.getText());
+        BigDecimal minResg = Formatos.valor(compraMinResgate.getText());
         try {
             int p = Integer.parseInt(pontos.getText().trim());
             int v = Integer.parseInt(validade.getText().trim());
@@ -182,6 +193,8 @@ public class ConfiguracoesView extends StackPane {
             valores.put(Config.MODO_RESGATE, rProdutos.isSelected() ? "PRODUTOS" : rDesconto.isSelected() ? "DESCONTO" : "AMBOS");
             valores.put(Config.DESCONTO_PONTOS, String.valueOf(dp));
             valores.put(Config.DESCONTO_REAIS, dr.toPlainString());
+            valores.put(Config.RESGATE_COMPRA_MINIMA, (minResg == null ? BigDecimal.ZERO : minResg).toPlainString());
+            valores.put(Config.VALIDADE_RENOVA, String.valueOf(renovaValidade.isSelected()));
             valores.put(Config.LOJA_NOME, loja.getText().trim());
             valores.put(Config.LINK_CONSULTA, link.getText().trim());
             salvarBtn.setDisable(true);

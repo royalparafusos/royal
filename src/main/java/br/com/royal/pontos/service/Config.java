@@ -19,6 +19,10 @@ public final class Config {
     public static final String MODO_RESGATE = "modo_resgate";       // PRODUTOS | DESCONTO | AMBOS
     public static final String DESCONTO_PONTOS = "desconto_pontos";
     public static final String DESCONTO_REAIS = "desconto_reais";
+    /** Valor mínimo da compra do dia para o cliente poder resgatar pontos (0 = sem mínimo). */
+    public static final String RESGATE_COMPRA_MINIMA = "resgate_compra_minima";
+    /** true = a cada compra nova, todos os pontos do cliente ganham a validade de novo (vencem X dias após a última compra). */
+    public static final String VALIDADE_RENOVA = "validade_renova";
     public static final String BLING_CLIENT_ID = "bling_client_id";
     public static final String BLING_CLIENT_SECRET = "bling_client_secret";
     public static final String BLING_ACCESS_TOKEN = "bling_access_token";
@@ -40,6 +44,8 @@ public final class Config {
             Map.entry(MODO_RESGATE, "AMBOS"),
             Map.entry(DESCONTO_PONTOS, "100"),
             Map.entry(DESCONTO_REAIS, "5.00"),
+            Map.entry(RESGATE_COMPRA_MINIMA, "40.00"),
+            Map.entry(VALIDADE_RENOVA, "true"),
             Map.entry(BLING_PONTOS_POR_REAL, "20"),
             Map.entry(BLING_IGNORAR_SITUACOES, "12"),
             Map.entry(BLING_AUTO_IMPORTAR, "false"),

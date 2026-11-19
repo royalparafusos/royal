@@ -62,6 +62,7 @@ public class App extends Application {
                 Db.configurar(cfg);
                 Db.inicializar();
                 Config.garantirPadroes();
+                br.com.royal.pontos.service.Migracoes.aplicar();
                 PontosService.processarExpiracoes();
                 return true;
             } catch (Exception e) {

@@ -154,16 +154,20 @@ public class ResgateView extends StackPane {
         };
         qtd.valueProperty().addListener((o, a, n) -> atualizar.run());
         atualizar.run();
-        HBox linha = new HBox(14, Ui.imagemPremio(p.imagem(), 90, 70),
-                new VBox(6, Ui.label("Cliente: " + cliente.nome(), "texto-forte"), Ui.campo("Quantidade", qtd), total, restante));
+        CompraDoDia compra = new CompraDoDia();
+        VBox dados = new VBox(6, Ui.label("Cliente: " + cliente.nome(), "texto-forte"), Ui.campo("Quantidade", qtd), total, restante);
+        if (compra.exigida()) dados.getChildren().add(compra.caixa());
+        HBox linha = new HBox(14, Ui.imagemPremio(p.imagem(), 90, 70), dados);
         linha.setAlignment(Pos.CENTER_LEFT);
         d.getDialogPane().setContent(linha);
         ButtonType ok = new ButtonType("Confirmar resgate", ButtonBar.ButtonData.OK_DONE);
         d.getDialogPane().getButtonTypes().addAll(ok, new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE));
+        d.getDialogPane().lookupButton(ok).disableProperty().bind(compra.invalida());
         if (d.showAndWait().filter(b -> b == ok).isEmpty()) return;
         long cid = cliente.id();
         int quantidade = qtd.getValue();
-        Ui.async(() -> new Object[]{PontosService.resgatarProduto(cid, p.id(), quantidade), PremioService.listar(false, "")}, res -> {
+        BigDecimal valorCompra = compra.valor();
+        Ui.async(() -> new Object[]{PontosService.resgatarProduto(cid, p.id(), quantidade, valorCompra), PremioService.listar(false, "")}, res -> {
             premios = castLista(res[1]);
             comprovante("Resgate confirmado!", quantidade + "x " + p.nome(), (PontosService.Resultado) res[0],
                     "Entregue o produto ao cliente e guarde o código do comprovante.");
@@ -204,26 +208,62 @@ public class ResgateView extends StackPane {
 
         Button gerar = Ui.botao("Gerar cupom de desconto", "btn-ouro", Icones.TAG);
         gerar.getStyleClass().add("btn-grande");
+        CompraDoDia compra = new CompraDoDia();
+        gerar.disableProperty().bind(compra.invalida());
         gerar.setOnAction(e -> {
             int usar = (int) Math.round(slider.getValue()) * bloco;
             if (!Ui.confirmar("Gerar cupom", "Usar " + Formatos.pontos(usar) + " de " + cliente.nome() + " para gerar "
                     + Formatos.moeda(PontosService.valorDesconto(usar)) + " de desconto?")) return;
             long cid = cliente.id();
+            BigDecimal valorCompra = compra.valor();
+            gerar.disableProperty().unbind();
             gerar.setDisable(true);
-            Ui.async(() -> PontosService.resgatarDesconto(cid, usar), r -> {
+            Ui.async(() -> PontosService.resgatarDesconto(cid, usar, valorCompra), r -> {
                 comprovante("Cupom gerado!", "Desconto de " + Formatos.moeda(r.valor()), r,
                         "Aplique o desconto no caixa agora e anote o código do cupom na venda.");
                 busca.recarregar();
-            }, () -> gerar.setDisable(false));
+            }, () -> { gerar.setDisable(false); gerar.disableProperty().bind(compra.invalida()); });
         });
         VBox previa = new VBox(4, Ui.label("Quantos pontos usar?", "texto-suave"), pts, valor);
         previa.getStyleClass().add("previa-box");
         VBox card = Ui.card(new HBox(14, Ui.iconeCirculo(Icones.TAG, "ouro", 48), new VBox(4, regra,
                 Ui.label("O cliente tem " + Formatos.pontos(cliente.saldo()) + " — pode gerar até "
                         + Formatos.moeda(PontosService.valorDesconto(maxBlocos * bloco)) + " de desconto.", "texto-suave"))),
-                slider, previa, gerar);
+                slider, previa);
+        if (compra.exigida()) card.getChildren().add(compra.caixa());
+        card.getChildren().add(gerar);
         card.setMaxWidth(640);
         areaDesconto.getChildren().setAll(card);
+    }
+
+    /** Campo "valor da compra de hoje", exigido quando há compra mínima para resgatar. */
+    private static final class CompraDoDia {
+        private final BigDecimal minimo = PontosService.compraMinimaResgate();
+        private final TextField campo = Ui.campoNumero("0,00", true);
+        private final javafx.beans.property.BooleanProperty invalida = new javafx.beans.property.SimpleBooleanProperty(false);
+
+        CompraDoDia() {
+            campo.setPrefWidth(160);
+            if (exigida()) {
+                invalida.set(true);
+                campo.textProperty().addListener((o, a, n) -> {
+                    BigDecimal v = Formatos.valor(n);
+                    invalida.set(v == null || v.compareTo(minimo) < 0);
+                });
+            }
+        }
+
+        boolean exigida() { return minimo.signum() > 0; }
+
+        javafx.beans.property.BooleanProperty invalida() { return invalida; }
+
+        BigDecimal valor() { return exigida() ? Formatos.valor(campo.getText()) : null; }
+
+        VBox caixa() {
+            Label dica = Ui.label("Resgate só com compra a partir de " + Formatos.moeda(minimo) + ".", "texto-suave");
+            dica.setWrapText(true);
+            return new VBox(4, Ui.campo("Valor da compra de hoje (R$)", campo), dica);
+        }
     }
 
     @SuppressWarnings("unchecked")
