@@ -106,10 +106,9 @@ for it in fontes["itens"]:
     if not arq.exists() or it.get("refazer"):
         candidatos = [("link", u) for u in it.get("imagens", [])]
         for p in it.get("paginas", []): candidatos += [("página", u) for u in og_image(p)]
-        if it.get("busca"):
+        if it.get("busca") and not it.get("imagens"):
             candidatos += [("ml", u) for u in busca_ml(it["busca"])]
-            candidatos += [("bing", u) for u in busca_bing(it["busca"])]
-            candidatos += [("ddg", u) for u in busca_ddg(it["busca"])]
+            # busca genérica (Bing/DDG) desativada: trazia imagens erradas
         print("   candidatos:", len(candidatos))
         for tipo, u in candidatos:
             img = baixar_imagem(u)
