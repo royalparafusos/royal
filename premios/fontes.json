@@ -306,7 +306,11 @@
      "lub"
     ]
    ],
-   "busca": "Tek Lub antiferrugem 300ml Tekbond"
+   "busca": "Tek Lub antiferrugem 300ml Tekbond",
+   "imagens": [
+    "https://imgs.extra.com.br/1576045847/1xg.jpg?imwidth=500"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7897208693447",
@@ -340,7 +344,12 @@
      "nylon"
     ]
    ],
-   "busca": "abraçadeira plástica nylon 2,5x100 branca pacote 100 unidades"
+   "busca": "abraçadeira plástica nylon 2,5x100 branca pacote 100 unidades",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/46/448/146015/1593692083689.JPG",
+    "https://img.lojadomecanico.com.br/256/46/448/146015/1593692083689.JPG"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7898472261851",
@@ -360,7 +369,11 @@
      "23"
     ]
    ],
-   "busca": "Araldite Hobby 23g Tekbond"
+   "busca": "Araldite Hobby 23g Tekbond",
+   "imagens": [
+    "https://imgs.extra.com.br/1573018440/1xg.jpg?imwidth=500"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7898472261776",
@@ -380,7 +393,11 @@
      "minutos"
     ]
    ],
-   "busca": "Araldite Hobby 10 minutos Tekbond"
+   "busca": "Araldite Hobby 10 minutos Tekbond",
+   "imagens": [
+    "https://imgs.pontofrio.com.br/1570752835/1xg.jpg?imwidth=500"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7898472261592",
@@ -396,7 +413,11 @@
      "profissional"
     ]
    ],
-   "busca": "Araldite Profissional 23g Tekbond"
+   "busca": "Araldite Profissional 23g Tekbond",
+   "imagens": [
+    "https://telhanorte.vtexassets.com/arquivos/ids/329571-650-650"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7898472254921",
@@ -412,7 +433,11 @@
      "massa"
     ]
    ],
-   "busca": "Araldite Massa 100g Tekbond"
+   "busca": "Araldite Massa 100g Tekbond",
+   "imagens": [
+    "https://telhanorte.vtexassets.com/arquivos/ids/1271758-650-650"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7891040004973",
@@ -431,7 +456,12 @@
      "3m"
     ]
    ],
-   "busca": "veda junta 3M silicone"
+   "busca": "veda junta 3M silicone",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/32/235/212748396/adesivopar-idany-3080051258.JPG",
+    "https://img.lojadomecanico.com.br/256/32/235/212748396/adesivopar-idany-3080051258.JPG"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7898314110149",
@@ -451,7 +481,12 @@
      "orbi"
     ]
    ],
-   "busca": "veda junta Orbiquímica"
+   "busca": "veda junta Orbiquímica",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/32/235/70401/Silicone-de-Alta-Temperatura-Vermelho-50-orbi-silic-alt-temper-verm50g1.JPG",
+    "https://img.lojadomecanico.com.br/256/32/235/70401/Silicone-de-Alta-Temperatura-Vermelho-50-orbi-silic-alt-temper-verm50g1.JPG"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7908027208429",
@@ -532,7 +567,12 @@
      "chaira"
     ]
    ],
-   "busca": "conjunto assador faca 9 polegadas e chaira Mor"
+   "busca": "conjunto assador faca 9 polegadas e chaira Mor",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/59/336/165662/1615890815901.JPG",
+    "https://img.lojadomecanico.com.br/256/59/336/165662/1615890815901.JPG"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7896020633464",
@@ -551,7 +591,12 @@
      "facas"
     ]
    ],
-   "busca": "conjunto assador 3 facas Mor"
+   "busca": "conjunto assador 3 facas Mor",
+   "imagens": [
+    "https://http2.mlstatic.com/D_NQ_NP_722001-MLA100058459025_122025-O.jpg",
+    "https://http2.mlstatic.com/D_Q_NP_2X_722001-MLA100058459025_122025-AB.webp"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7893946180447",
@@ -567,7 +612,11 @@
      "16"
     ]
    ],
-   "busca": "facão mato 16 cabo plástico Vonder"
+   "busca": "facão mato 16 cabo plástico Vonder",
+   "imagens": [
+    "https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/0803f080b7e9fa574919343a577e37d4?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795699903&Signature=taaTC9ssB6HwterSl8NPBzDhQbw%3D"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7893946180461",
@@ -583,7 +632,11 @@
      "20"
     ]
    ],
-   "busca": "facão mato 20 cabo plástico Vonder"
+   "busca": "facão mato 20 cabo plástico Vonder",
+   "imagens": [
+    "https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/0803f080b7e9fa574919343a577e37d4?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795699903&Signature=taaTC9ssB6HwterSl8NPBzDhQbw%3D"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7896020633556",
@@ -600,7 +653,11 @@
      "bamboo"
     ]
    ],
-   "busca": "tábua de bambu com cabo 38,5 x 20,5 cm Mor"
+   "busca": "tábua de bambu com cabo 38,5 x 20,5 cm Mor",
+   "imagens": [
+    "https://imgs.pontofrio.com.br/1566600950/1xg.jpg?imwidth=500"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7896020632085",
@@ -616,7 +673,11 @@
      "duplo"
     ]
    ],
-   "busca": "espeto duplo 75cm Mor"
+   "busca": "espeto duplo 75cm Mor",
+   "imagens": [
+    "https://imgs.extra.com.br/1574870990/1xg.jpg?imwidth=500"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7896020632047",
@@ -632,7 +693,11 @@
      "simples"
     ]
    ],
-   "busca": "espeto simples 85cm Mor"
+   "busca": "espeto simples 85cm Mor",
+   "imagens": [
+    "https://telhanorte.vtexassets.com/arquivos/ids/1210041-650-650"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7898622850041",
@@ -648,7 +713,12 @@
      "margarida"
     ]
    ],
-   "busca": "clorador flutuante margarida Brustec"
+   "busca": "clorador flutuante margarida Brustec",
+   "imagens": [
+    "https://telhanorte.vtexassets.com/arquivos/ids/1275660-650-650",
+    "https://http2.mlstatic.com/D_NQ_NP_826358-MLA99609938318_122025-O.jpg"
+   ],
+   "refazer": true
   },
   {
    "gtin": "7898622850058",
@@ -664,7 +734,12 @@
      "medio"
     ]
    ],
-   "busca": "clorador flutuante médio Brustec"
+   "busca": "clorador flutuante médio Brustec",
+   "imagens": [
+    "https://telhanorte.vtexassets.com/arquivos/ids/1376069-650-650",
+    "https://imgs.casasbahia.com.br/1570612473/1xg.jpg?imwidth=500"
+   ],
+   "refazer": true
   }
  ]
 }
