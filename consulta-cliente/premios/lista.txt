@@ -1,0 +1,28 @@
+# arquivo  gtin  [link alternativo]
+espatula-inox-80 7899612796868
+espatula-inox-100 7899612796875
+espatula-inox-60 7899612796851
+espatula-inox-50 7899612796844
+espatula-condor-dentada 7899389012079 https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/t/acae9c291546fae93cda8652769c0fb6?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795096220&Signature=EcSxNuzrrWwflHgTnTQo5yks84M%3D
+espatula-condor-lisa 7899389012048 https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/t/cbc6ebf7868764731e7d8abb56a31132?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795096220&Signature=6UDbjn102P7eRzLIIEP4tMF57d0%3D
+luva-pu-kalipso 7898390942320 https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/t/3904b57123dcb6a143d702d4e7be6b49?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795096220&Signature=l%2F7QY3cp7fmgxX6TBVzWXFt%2B%2FZ8%3D
+fita-isolante-krona 7897801300978
+lampada-led-20w-3000k 7908024213921
+lampada-led-20w-6500k 7908024214935
+cloro-genco-3em1 7896544402119
+araldite-hobby-23g 7898472261851
+araldite-massa-100g 7898472254921
+tek-lub-antiferrugem 7898543397373
+veda-junta-orbiquimica 7898314110149
+bainha-facao-lotus 7908027208450
+clorador-medio-brustec 7898622850058
+espeto-duplo-mor 7896020632085
+espeto-simples-mor 7896020632047
+abracadeira-branca 7898105771511
+facao-vonder-20 7893946180461 https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/t/0803f080b7e9fa574919343a577e37d4?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795096220&Signature=fvnjlXFNxUjtVnPoTPh5hyaAlLk%3D
+facao-vonder-16 7893946180447 https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/t/0803f080b7e9fa574919343a577e37d4?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795096220&Signature=fvnjlXFNxUjtVnPoTPh5hyaAlLk%3D
+clorador-margarida-brustec 7898622850041
+araldite-hobby-10min 7898472261776
+assador-3-facas-mor 7896020633464
+assador-faca-chaira-mor 7896020633457
+tabua-bambu-mor 7896020633556

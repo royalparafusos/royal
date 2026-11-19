@@ -1,0 +1,51 @@
+# Baixa as fotos dos brindes listados em consulta-cliente/premios/lista.txt,
+# guarda no repositório (consulta-cliente/premios/*.jpg) e republica o app do cliente.
+# As fotos ficam em https://royalparafusos.github.io/royal/premios/<arquivo>.jpg
+name: Fotos dos brindes
+
+on:
+  push:
+    branches: [main]
+    paths: ['consulta-cliente/premios/lista.txt', '.github/workflows/imagens.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fotos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Baixar fotos
+        shell: bash
+        run: |
+          cd consulta-cliente/premios
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
+          ok=0; falhou=""
+          while read -r nome gtin alt; do
+            [[ -z "$nome" || "$nome" == \#* ]] && continue
+            [[ -f "$nome.jpg" ]] && { echo "JA EXISTE $nome"; continue; }
+            pegou=""
+            for url in "https://cdn-cosmos.bluesoft.com.br/products/$gtin" "$alt"; do
+              [[ -z "$url" ]] && continue
+              rm -f tmp
+              if curl -sSfL -A "$UA" --max-time 30 -o tmp "$url" && [[ $(stat -c%s tmp) -gt 2000 ]] && file tmp | grep -qiE 'image|bitmap'; then
+                convert tmp -background white -flatten -resize '600x600>' -quality 85 "$nome.jpg" && pegou="$url" && break
+              fi
+            done
+            rm -f tmp
+            if [[ -n "$pegou" ]]; then echo "OK $nome <- $pegou"; ok=$((ok+1)); else echo "FALHOU $nome"; falhou="$falhou $nome"; fi
+          done < lista.txt
+          echo "Baixadas: $ok"; echo "Falharam:$falhou"
+      - name: Guardar no repositório
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add consulta-cliente/premios/*.jpg 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Fotos dos brindes" && git push)
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./consulta-cliente
+          publish_branch: gh-pages
