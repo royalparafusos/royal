@@ -29,7 +29,33 @@ def og_image(pagina):
         print("   página falhou", e); return []
     achados = re.findall(r'<meta[^>]+(?:property|name)=["\'](?:og:image|twitter:image)(?::src)?["\'][^>]+content=["\']([^"\']+)', h, re.I)
     achados += re.findall(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\'](?:og:image|twitter:image)', h, re.I)
-    return [urllib.parse.urljoin(pagina, a.replace("&amp;", "&")) for a in achados]
+    lista = [urllib.parse.urljoin(pagina, a.replace("&amp;", "&")) for a in achados]
+    return lista + imagens_da_pagina(h, pagina)
+
+LOG = []
+_print = print
+def print(*a):
+    _print(*a); LOG.append(" ".join(str(x) for x in a))
+
+def imagens_da_pagina(h, pagina):
+    """Fotos grandes da página quando não há og:image (ex.: lojas que montam a página por JavaScript)."""
+    urls = re.findall(r'(?:src|data-src|data-zoom-image|href)=["\']([^"\']+\.(?:jpe?g|png|webp)(?:\?[^"\']*)?)["\']', h, re.I)
+    urls += re.findall(r'"(https?:[^"]+\.(?:jpe?g|png|webp)[^"]*)"', h, re.I)
+    ruins = ("logo", "icon", "banner", "sprite", "selo", "bandeira", "pagamento", "avatar", "placeholder")
+    vistos, out = set(), []
+    for u in urls:
+        u = urllib.parse.urljoin(pagina, u.replace("\\/", "/").replace("&amp;", "&"))
+        if u in vistos or any(r in u.lower() for r in ruins): continue
+        vistos.add(u); out.append(u)
+    return out[:12]
+
+def busca_bing(q):
+    try:
+        r = S.get("https://www.bing.com/images/search", params={"q": q, "form": "HDRSC2", "first": "1"}, timeout=20)
+        achados = re.findall(r'murl&quot;:&quot;(.*?)&quot;', r.text) or re.findall(r'"murl":"(.*?)"', r.text)
+        return [a.replace("\\/", "/") for a in achados[:8]]
+    except Exception as e:
+        print("   bing falhou", e); return []
 
 def busca_ddg(q):
     try:
@@ -60,7 +86,10 @@ for it in fontes["itens"]:
     if not arq.exists() or it.get("refazer"):
         candidatos = [("link", u) for u in it.get("imagens", [])]
         for p in it.get("paginas", []): candidatos += [("página", u) for u in og_image(p)]
-        if it.get("busca"): candidatos += [("busca", u) for u in busca_ddg(it["busca"])]
+        if it.get("busca"):
+            candidatos += [("bing", u) for u in busca_bing(it["busca"])]
+            candidatos += [("ddg", u) for u in busca_ddg(it["busca"])]
+        print("   candidatos:", len(candidatos))
         for tipo, u in candidatos:
             img = baixar_imagem(u)
             if img:
@@ -73,3 +102,4 @@ for it in fontes["itens"]:
                       "imagem": f"premios/{it['gtin']}.jpg"})
 (DESTINO / "imagens.json").write_text(json.dumps({"itens": saida}, ensure_ascii=False, indent=1), encoding="utf-8")
 print(len(saida), "imagens prontas")
+(DESTINO / "log.txt").write_text("\n".join(LOG), encoding="utf-8")
