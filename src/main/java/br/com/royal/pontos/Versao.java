@@ -2,7 +2,7 @@ package br.com.royal.pontos;
 
 /** Versão do programa. A cada atualização publicada, este número sobe junto com a tag no GitHub (ex.: v1.2.0). */
 public final class Versao {
-    public static final String ATUAL = "1.5.1";
+    public static final String ATUAL = "1.5.2";
 
     /** Repositório no GitHub onde as versões novas são publicadas (usuario/repositorio). */
     public static final String REPOSITORIO = "royalparafusos/royal";

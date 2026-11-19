@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.com.royal</groupId>
   <artifactId>royal-pontos</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.2</version>
   <name>Royal Pontos</name>
 
   <properties>

@@ -104,6 +104,8 @@ public class MainView extends BorderPane {
         importarBlingAutomatico();
         verificarAtualizacao(false);
         fazerBackup(false);
+        Ui.async(br.com.royal.pontos.service.FotosPremios::aplicar,
+                n -> { if (n > 0) Ui.toast("Fotos adicionadas automaticamente em " + n + " prêmio(s)"); });
         javafx.animation.Timeline backup = new javafx.animation.Timeline(
                 new javafx.animation.KeyFrame(javafx.util.Duration.minutes(30), e -> fazerBackup(false)));
         backup.setCycleCount(javafx.animation.Animation.INDEFINITE);
