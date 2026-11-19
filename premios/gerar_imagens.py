@@ -57,6 +57,26 @@ def busca_bing(q):
     except Exception as e:
         print("   bing falhou", e); return []
 
+def busca_ml(q):
+    """Busca pública do Mercado Livre (fotos de anúncios)."""
+    out = []
+    try:
+        r = S.get("https://api.mercadolibre.com/sites/MLB/search", params={"q": q, "limit": 6}, timeout=20)
+        print("   ML status", r.status_code)
+        for x in r.json().get("results", []):
+            t = (x.get("thumbnail") or "").replace("http://", "https://")
+            if t: out.append(re.sub(r"-[A-Z]\.(jpg|webp)$", r"-O.\1", t))
+    except Exception as e:
+        print("   ML falhou", e)
+    if not out:
+        try:
+            h = S.get("https://lista.mercadolivre.com.br/" + urllib.parse.quote(q.replace(" ", "-")), timeout=20).text
+            out = [u for u in re.findall(r'(https://http2\.mlstatic\.com/D_[^"\s]+?\.(?:jpg|webp))', h) if "-O." in u or "-V." in u or "_2X_" in u][:6]
+            print("   ML lista", len(out))
+        except Exception as e:
+            print("   ML lista falhou", e)
+    return out
+
 def busca_ddg(q):
     try:
         r = S.get("https://duckduckgo.com/", params={"q": q, "iax": "images", "ia": "images"}, timeout=20)
@@ -87,6 +107,7 @@ for it in fontes["itens"]:
         candidatos = [("link", u) for u in it.get("imagens", [])]
         for p in it.get("paginas", []): candidatos += [("página", u) for u in og_image(p)]
         if it.get("busca"):
+            candidatos += [("ml", u) for u in busca_ml(it["busca"])]
             candidatos += [("bing", u) for u in busca_bing(it["busca"])]
             candidatos += [("ddg", u) for u in busca_ddg(it["busca"])]
         print("   candidatos:", len(candidatos))
