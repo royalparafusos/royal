@@ -12,12 +12,14 @@ public final class Migracoes {
 
     private static final String CATALOGO_V1 = "migracao_catalogo_100pts_v1";
     private static final String CATALOGO_V2 = "migracao_catalogo_faixas_v2";
+    private static final String CONSULTA_V3 = "migracao_consulta_compra_minima_v3";
 
     private Migracoes() {}
 
     public static void aplicar() {
         if (Config.get(CATALOGO_V1).isBlank()) catalogoInicial();
         if (Config.get(CATALOGO_V2).isBlank()) catalogoFaixas();
+        if (Db.isNuvem() && Config.get(CONSULTA_V3).isBlank()) atualizarConsultaCliente();
     }
 
     /**
@@ -44,6 +46,18 @@ public final class Migracoes {
                 {"Tábua de Bambu com Cabo 38,5 x 20,5 cm Mor", "45.00", 500},
         });
         Config.set(CATALOGO_V2, LocalDateTime.now().toString());
+    }
+
+    /** Atualiza a função que o site do cliente usa (passa a enviar a compra mínima para resgate). */
+    private static void atualizarConsultaCliente() {
+        try (var in = Migracoes.class.getResourceAsStream("/sql/consultar_pontos.sql")) {
+            if (in == null) return;
+            Db.executar(new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
+            Config.set(CONSULTA_V3, LocalDateTime.now().toString());
+            Atualizador.log("Função consultar_pontos atualizada (compra mínima no site do cliente)");
+        } catch (Exception e) {
+            Atualizador.log("Não foi possível atualizar consultar_pontos: " + e.getMessage());
+        }
     }
 
     private static void inserir(Object[][] itens) {

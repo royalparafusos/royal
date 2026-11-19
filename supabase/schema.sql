@@ -121,6 +121,7 @@ begin
         'regra_reais', coalesce((select valor from configuracoes where chave = 'regra_reais'), '1.00'),
         'regra_pontos', coalesce((select valor from configuracoes where chave = 'regra_pontos'), '1'),
         'validade_dias', coalesce((select valor from configuracoes where chave = 'validade_dias'), '60'),
+        'compra_minima', coalesce((select valor from configuracoes where chave = 'resgate_compra_minima'), '40.00'),
         'extrato', coalesce((select json_agg(x) from (
                         select criado_em, tipo, pontos, descricao, expira_em, estornado
                         from movimentos where cliente_id = v_cli.id

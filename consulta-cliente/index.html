@@ -77,6 +77,13 @@
   .barra i { display: block; height: 100%; background: linear-gradient(90deg, var(--ouro), var(--ouro2)); border-radius: 8px; }
   .desconto { background: linear-gradient(135deg, #FFF8E1, #FFF3CC); border-radius: 16px; padding: 16px; font-size: 14.5px; line-height: 1.45; }
   .desconto b { color: #A66F00; }
+  .minimos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .minimo { background: #F4F6FC; border-radius: 14px; padding: 12px; }
+  .minimo small { display: block; font-size: 11.5px; color: #6B7591; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+  .minimo b { display: block; font-size: 20px; color: var(--noite); margin-top: 4px; }
+  .minimo span { font-size: 12px; color: #6B7591; }
+  .faixas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .faixa { background: #FFF8E1; color: #7A5200; border-radius: 30px; padding: 7px 12px; font-size: 12.5px; font-weight: 700; }
 
   /* ---------- prêmios ---------- */
   .filtros { display: flex; gap: 8px; margin: 12px 0 4px; overflow-x: auto; }
@@ -183,6 +190,10 @@
         <div class="titulo">Seu próximo prêmio</div>
         <div id="meta" style="margin-top:12px"></div>
       </div>
+      <div class="card" id="cardMinimos">
+        <div class="titulo">Valores mínimos para resgate</div>
+        <div id="minimos"></div>
+      </div>
       <div class="card oculto" id="cardDesconto"><div class="desconto" id="desconto"></div></div>
       <div class="atualizado" id="atualizado"></div>
     </div>
@@ -192,6 +203,7 @@
       <div class="card">
         <div class="titulo">Prêmios</div>
         <p class="sub">Apresente seu CPF no balcão para trocar.</p>
+        <div id="minimosPremios"></div>
         <div class="filtros">
           <button class="filtro ativo" data-f="todos">Todos</button>
           <button class="filtro" data-f="posso">Já posso trocar</button>
@@ -351,6 +363,23 @@
       $("cardDesconto").classList.remove("oculto");
     } else $("cardDesconto").classList.add("oculto");
 
+    // valores mínimos para resgate
+    const compraMin = Number(r.compra_minima != null ? r.compra_minima : 40);
+    const ptsMin = modo === "DESCONTO" ? Number(r.desconto_pontos || 100)
+      : premios.length ? premios[0].pontos : (modo === "AMBOS" ? Number(r.desconto_pontos || 100) : 0);
+    const blocos = [];
+    if (ptsMin > 0) blocos.push('<div class="minimo"><small>Pontos mínimos</small><b>' + fmt(ptsMin) + ' pts</b><span>' +
+      (modo === "DESCONTO" || !premios.length ? "para o primeiro desconto" : "para o prêmio mais barato") + "</span></div>");
+    blocos.push('<div class="minimo"><small>Compra no dia</small><b>' + (compraMin > 0 ? moeda(compraMin) : "Livre") + "</b><span>" +
+      (compraMin > 0 ? "compra mínima para resgatar" : "sem compra mínima") + "</span></div>");
+    const niveis = {};
+    premios.forEach((p) => { niveis[p.pontos] = (niveis[p.pontos] || 0) + 1; });
+    const faixas = Object.keys(niveis).map(Number).sort((a, b) => a - b).map((n) =>
+      '<span class="faixa">⭐ ' + fmt(n) + " pts · " + niveis[n] + (niveis[n] > 1 ? " prêmios" : " prêmio") + "</span>").join("");
+    const htmlMin = '<div class="minimos">' + blocos.join("") + "</div>" + (faixas ? '<div class="faixas">' + faixas + "</div>" : "");
+    $("minimos").innerHTML = htmlMin;
+    $("minimosPremios").innerHTML = '<div class="minimos">' + blocos.join("") + "</div>";
+
     $("atualizado").textContent = r.atualizado_em ? "Atualizado em " + new Date(r.atualizado_em).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "";
 
     // prêmios
@@ -384,7 +413,7 @@
     const regra = r.regra_reais ? "A cada " + moeda(r.regra_reais) + " em compras você ganha " + fmt(r.regra_pontos || 1) + (Number(r.regra_pontos) > 1 ? " pontos." : " ponto.") : "Cada compra na loja vira pontos.";
     const passos = ["Informe seu CPF no caixa a cada compra.", regra,
       "Seus pontos valem por " + (r.validade_dias || 60) + " dias e renovam a cada nova compra.",
-      "Resgate com compra mínima de R$ 40,00 no dia.",
+      compraMin > 0 ? "Resgate com compra mínima de " + moeda(compraMin) + " no dia." : "Resgate a qualquer momento, sem compra mínima.",
       modo === "DESCONTO" ? "Troque seus pontos por desconto no balcão." : modo === "PRODUTOS" ? "Troque seus pontos por produtos do catálogo no balcão." : "Troque por produtos do catálogo ou por desconto, direto no balcão."];
     $("passos").innerHTML = passos.map((p) => "<li>" + esc(p) + "</li>").join("");
   }
