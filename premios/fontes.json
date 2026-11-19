@@ -1,47 +1,293 @@
 {
-  "_como_usar": "Cada item vira consulta-cliente/premios/<gtin>.jpg. A ordem de tentativa é: imagens (links diretos), paginas (foto principal da página do produto) e busca (pesquisa de imagens na internet). O programa usa imagens.json para colocar a foto nos prêmios.",
-  "itens": [
-    {"gtin": "7898390942320", "nome": "LUVA PU PRETA T10 XG CA15272 KALIPSO", "bling": ["16255199760", "16255205275", "16255204323"],
-     "palavras": [["luva"], ["pu"]],
-     "imagens": ["https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/3904b57123dcb6a143d702d4e7be6b49?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795698811&Signature=UJzk9Q%2Fe%2BpIu6Cq7RvctjWz8J%2Fc%3D"],
-     "busca": "luva PU preta Kalipso CA 15272"},
-    {"gtin": "7897801300978", "nome": "FITA ISOLANTE 20MX19MM KRONA", "bling": ["16274637073"],
-     "palavras": [["fita"], ["isolante"]],
-     "busca": "fita isolante Krona 19mm x 20m"},
-    {"gtin": "7908024214935", "nome": "LAMPADA LED ALTA POTENCIA 20W 6500K E27 BIVOLT 1600LM G2 BRL CRISTALLUX", "bling": ["16518784857"],
-     "palavras": [["lampada", "led"], ["6500", "6500k", "branca", "fria"]],
-     "busca": "lâmpada LED alta potência 20W 6500K Cristallux E27"},
-    {"gtin": "7908024213921", "nome": "LAMPADA LED ALTA POTENCIA 20W 3000K E27 BIVOLT 1600LM G2 BRL CRISTALLUX", "bling": ["16518784856"],
-     "palavras": [["lampada", "led"], ["3000", "3000k", "amarela", "quente"]],
-     "busca": "lâmpada LED alta potência 20W 3000K Cristallux E27"},
-    {"gtin": "7896544402119", "nome": "GENCO TABLETES MULTIPLA ACAO 3 EM 1 T-200 200G", "bling": ["16496618073", "16482431197"],
-     "palavras": [["genco", "cloro", "tablete", "tabletes"]],
-     "paginas": ["https://www.telhanorte.com.br/tabletes-de-multipla-acao-para-piscina-200g-genco-1565001/p",
-                 "https://www.tendaatacado.com.br/cloro-tabletes-3x1-genco-200g-21802/p"],
-     "busca": "Genco tabletes múltipla ação 3 em 1 200g"},
-    {"gtin": "7899612796875", "nome": "ESPATULA ACO INOXIDAVEL LISA 100MM SPARTA", "bling": ["16257582996"],
-     "palavras": [["espatula"], ["aco", "inox", "inoxidavel", "sparta"], ["100mm", "100"]],
-     "paginas": ["https://www.lojadomecanico.com.br/produto/105158/31/276/espatula-de-aco-inoxidavel-de-4-pol-com-cabo-de-madeira-sparta-852185"],
-     "busca": "espátula aço inox lisa 100mm Sparta"},
-    {"gtin": "7899612796868", "nome": "ESPATULA ACO INOXIDAVEL LISA 80MM SPARTA", "bling": ["16257582995"],
-     "palavras": [["espatula"], ["aco", "inox", "inoxidavel", "sparta"], ["80mm", "80"]],
-     "paginas": ["https://www.lojadomecanico.com.br/produto/105156/31/276/espatula-de-aco-inoxidavel-de-318-pol-com-cabo-de-madeira-sparta-852155"],
-     "busca": "espátula aço inox lisa 80mm Sparta"},
-    {"gtin": "7899612796844", "nome": "ESPATULA ACO INOXIDAVEL LISA 50MM SPARTA", "bling": ["16257582994"],
-     "palavras": [["espatula"], ["aco", "inox", "inoxidavel", "sparta"], ["50mm", "50"]],
-     "paginas": ["https://www.lojadomecanico.com.br/produto/105153/31/276/Espatula-de-Aco-Inoxidavel-de-2-Pol-com-Cabo-de-Madeira"],
-     "busca": "espátula aço inox lisa 50mm Sparta"},
-    {"gtin": "7899612796851", "nome": "ESPATULA ACO INOXIDAVEL LISA 60MM SPARTA", "bling": ["16257582993"],
-     "palavras": [["espatula"], ["aco", "inox", "inoxidavel", "sparta"], ["60mm", "60"]],
-     "paginas": ["https://www.lojadomecanico.com.br/produto/343203/31/276/espatula-de-aco-inox-lisa-214-pol-com-cabo-de-madeira-sparta-8521255"],
-     "busca": "espátula aço inox lisa 60mm Sparta"},
-    {"gtin": "7899389012079", "nome": "ESPATULA PLASTICA DENTADA 10 859 CONDOR", "bling": ["16249876035"],
-     "palavras": [["espatula"], ["dentada"]],
-     "imagens": ["https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/acae9c291546fae93cda8652769c0fb6?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795698815&Signature=gHpetiZkVjN0X%2BCmC7B3q9ew4kE%3D"],
-     "busca": "espátula plástica dentada Condor 859"},
-    {"gtin": "7899389012048", "nome": "ESPATULA PLASTICA LISA 10 858 CONDOR", "bling": ["16249875239"],
-     "palavras": [["espatula"], ["plastica"], ["lisa"]],
-     "imagens": ["https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/cbc6ebf7868764731e7d8abb56a31132?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795698815&Signature=UpS5MGN%2BWzOF9JXeYDOd2hIY23Y%3D"],
-     "busca": "espátula plástica lisa Condor 858"}
-  ]
+ "_como_usar": "Cada item vira consulta-cliente/premios/<gtin>.jpg. A ordem de tentativa é: imagens (links diretos), paginas (foto principal da página do produto) e busca (pesquisa de imagens na internet). O programa usa imagens.json para colocar a foto nos prêmios.",
+ "itens": [
+  {
+   "gtin": "7898390942320",
+   "nome": "LUVA PU PRETA T10 XG CA15272 KALIPSO",
+   "bling": [
+    "16255199760",
+    "16255205275",
+    "16255204323"
+   ],
+   "palavras": [
+    [
+     "luva"
+    ],
+    [
+     "pu"
+    ]
+   ],
+   "imagens": [
+    "https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/3904b57123dcb6a143d702d4e7be6b49?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795698811&Signature=UJzk9Q%2Fe%2BpIu6Cq7RvctjWz8J%2Fc%3D"
+   ],
+   "busca": "luva PU preta Kalipso CA 15272"
+  },
+  {
+   "gtin": "7897801300978",
+   "nome": "FITA ISOLANTE 20MX19MM KRONA",
+   "bling": [
+    "16274637073"
+   ],
+   "palavras": [
+    [
+     "fita"
+    ],
+    [
+     "isolante"
+    ]
+   ],
+   "busca": "fita isolante Krona 19mm x 20m",
+   "imagens": [
+    "https://tumelerosaintgobain.vtexassets.com/arquivos/ids/190909-800-800?v=637654284684900000&width=800&height=800&aspect=true"
+   ],
+   "paginas": [
+    "https://tanako.com.br/produtos/fita-isolante-20m-x-19mm-preta-antichama-krona/"
+   ]
+  },
+  {
+   "gtin": "7908024214935",
+   "nome": "LAMPADA LED ALTA POTENCIA 20W 6500K E27 BIVOLT 1600LM G2 BRL CRISTALLUX",
+   "bling": [
+    "16518784857"
+   ],
+   "palavras": [
+    [
+     "lampada",
+     "led"
+    ],
+    [
+     "6500",
+     "6500k",
+     "branca",
+     "fria"
+    ]
+   ],
+   "busca": "lâmpada LED alta potência 20W 6500K Cristallux E27",
+   "imagens": [
+    "https://storage.cristallux.com.br/images/2024/08/lampada-led-alta-potencia-20w-6500k-e27-bivolt-1600lm-g2-brl-produto-1723493936-1723493936.png"
+   ],
+   "paginas": [
+    "https://www.cristallux.com.br/produto/lampada-cristall-home-alta-potencia-20w-6500k-e27-bivolt-1600lm-g2-brl"
+   ]
+  },
+  {
+   "gtin": "7908024213921",
+   "nome": "LAMPADA LED ALTA POTENCIA 20W 3000K E27 BIVOLT 1600LM G2 BRL CRISTALLUX",
+   "bling": [
+    "16518784856"
+   ],
+   "palavras": [
+    [
+     "lampada",
+     "led"
+    ],
+    [
+     "3000",
+     "3000k",
+     "amarela",
+     "quente"
+    ]
+   ],
+   "busca": "lâmpada LED alta potência 20W 3000K Cristallux E27",
+   "imagens": [
+    "https://www.boxlar.com.br/wp-content/uploads/2025/12/39158.jpg",
+    "https://www.boxlar.com.br/wp-content/uploads/2025/12/39159.jpg"
+   ],
+   "paginas": [
+    "https://www.cristallux.com.br/produto/lampada-led-alta-potencia-20w-3000k-e27-bivolt-1400lm-g2-brl"
+   ]
+  },
+  {
+   "gtin": "7896544402119",
+   "nome": "GENCO TABLETES MULTIPLA ACAO 3 EM 1 T-200 200G",
+   "bling": [
+    "16496618073",
+    "16482431197"
+   ],
+   "palavras": [
+    [
+     "genco",
+     "cloro",
+     "tablete",
+     "tabletes"
+    ]
+   ],
+   "paginas": [],
+   "busca": "Genco tabletes múltipla ação 3 em 1 200g",
+   "imagens": [
+    "https://telhanorte.vtexassets.com/arquivos/ids/329946-800-800",
+    "https://telhanorte.vtexassets.com/arquivos/ids/329946-650-650"
+   ],
+   "refazer": true
+  },
+  {
+   "gtin": "7899612796875",
+   "nome": "ESPATULA ACO INOXIDAVEL LISA 100MM SPARTA",
+   "bling": [
+    "16257582996"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "aco",
+     "inox",
+     "inoxidavel",
+     "sparta"
+    ],
+    [
+     "100mm",
+     "100"
+    ]
+   ],
+   "paginas": [
+    "https://www.lojadomecanico.com.br/produto/105158/31/276/espatula-de-aco-inoxidavel-de-4-pol-com-cabo-de-madeira-sparta-852185"
+   ],
+   "busca": "espátula aço inox lisa 100mm Sparta",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/31/276/105158/Espatula-de-Aco-Inoxidavel-de-4-Pol-com--sparta-8521851.JPG",
+    "https://img.lojadomecanico.com.br/800/31/276/105158/Espatula-de-Aco-Inoxidavel-de-4-Pol-com--sparta-8521851.JPG",
+    "https://img.lojadomecanico.com.br/500/31/276/105158/Espatula-de-Aco-Inoxidavel-de-4-Pol-com--sparta-8521851.JPG",
+    "https://img.lojadomecanico.com.br/256/31/276/105158/Espatula-de-Aco-Inoxidavel-de-4-Pol-com--sparta-8521851.JPG"
+   ]
+  },
+  {
+   "gtin": "7899612796868",
+   "nome": "ESPATULA ACO INOXIDAVEL LISA 80MM SPARTA",
+   "bling": [
+    "16257582995"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "aco",
+     "inox",
+     "inoxidavel",
+     "sparta"
+    ],
+    [
+     "80mm",
+     "80"
+    ]
+   ],
+   "paginas": [
+    "https://www.lojadomecanico.com.br/produto/105156/31/276/espatula-de-aco-inoxidavel-de-318-pol-com-cabo-de-madeira-sparta-852155"
+   ],
+   "busca": "espátula aço inox lisa 80mm Sparta",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/31/276/105156/Espatula-de-Aco-Inoxidavel-de-3-18-Pol-C-sparta-8521551.JPG",
+    "https://img.lojadomecanico.com.br/800/31/276/105156/Espatula-de-Aco-Inoxidavel-de-3-18-Pol-C-sparta-8521551.JPG",
+    "https://img.lojadomecanico.com.br/500/31/276/105156/Espatula-de-Aco-Inoxidavel-de-3-18-Pol-C-sparta-8521551.JPG",
+    "https://img.lojadomecanico.com.br/256/31/276/105156/Espatula-de-Aco-Inoxidavel-de-3-18-Pol-C-sparta-8521551.JPG"
+   ]
+  },
+  {
+   "gtin": "7899612796844",
+   "nome": "ESPATULA ACO INOXIDAVEL LISA 50MM SPARTA",
+   "bling": [
+    "16257582994"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "aco",
+     "inox",
+     "inoxidavel",
+     "sparta"
+    ],
+    [
+     "50mm",
+     "50"
+    ]
+   ],
+   "paginas": [
+    "https://www.lojadomecanico.com.br/produto/105153/31/276/Espatula-de-Aco-Inoxidavel-de-2-Pol-com-Cabo-de-Madeira"
+   ],
+   "busca": "espátula aço inox lisa 50mm Sparta",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/31/276/105153/Espatula-de-Aco-Inoxidavel-de-2-Pol-Com--sparta-8520951.JPG",
+    "https://img.lojadomecanico.com.br/800/31/276/105153/Espatula-de-Aco-Inoxidavel-de-2-Pol-Com--sparta-8520951.JPG",
+    "https://img.lojadomecanico.com.br/500/31/276/105153/Espatula-de-Aco-Inoxidavel-de-2-Pol-Com--sparta-8520951.JPG",
+    "https://img.lojadomecanico.com.br/256/31/276/105153/Espatula-de-Aco-Inoxidavel-de-2-Pol-Com--sparta-8520951.JPG"
+   ]
+  },
+  {
+   "gtin": "7899612796851",
+   "nome": "ESPATULA ACO INOXIDAVEL LISA 60MM SPARTA",
+   "bling": [
+    "16257582993"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "aco",
+     "inox",
+     "inoxidavel",
+     "sparta"
+    ],
+    [
+     "60mm",
+     "60"
+    ]
+   ],
+   "paginas": [
+    "https://www.lojadomecanico.com.br/produto/343203/31/276/espatula-de-aco-inox-lisa-214-pol-com-cabo-de-madeira-sparta-8521255"
+   ],
+   "busca": "espátula aço inox lisa 60mm Sparta",
+   "imagens": [
+    "https://img.lojadomecanico.com.br/1000/31/276/343203/1660927592875.JPG",
+    "https://img.lojadomecanico.com.br/800/31/276/343203/1660927592875.JPG",
+    "https://img.lojadomecanico.com.br/500/31/276/343203/1660927592875.JPG",
+    "https://img.lojadomecanico.com.br/256/31/276/343203/1660927592875.JPG"
+   ]
+  },
+  {
+   "gtin": "7899389012079",
+   "nome": "ESPATULA PLASTICA DENTADA 10 859 CONDOR",
+   "bling": [
+    "16249876035"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "dentada"
+    ]
+   ],
+   "imagens": [
+    "https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/acae9c291546fae93cda8652769c0fb6?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795698815&Signature=gHpetiZkVjN0X%2BCmC7B3q9ew4kE%3D"
+   ],
+   "busca": "espátula plástica dentada Condor 859"
+  },
+  {
+   "gtin": "7899389012048",
+   "nome": "ESPATULA PLASTICA LISA 10 858 CONDOR",
+   "bling": [
+    "16249875239"
+   ],
+   "palavras": [
+    [
+     "espatula"
+    ],
+    [
+     "plastica"
+    ],
+    [
+     "lisa"
+    ]
+   ],
+   "imagens": [
+    "https://orgbling.s3.amazonaws.com/494c7750b6ec3643ac16cbc352721ede/cbc6ebf7868764731e7d8abb56a31132?AWSAccessKeyId=AKIATCLMSGFXTAGX6WUM&Expires=1795698815&Signature=UpS5MGN%2BWzOF9JXeYDOd2hIY23Y%3D"
+   ],
+   "busca": "espátula plástica lisa Condor 858"
+  }
+ ]
 }
