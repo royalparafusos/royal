@@ -1,28 +1,126 @@
 7898390942320 LUVA PU PRETA T10 XG CA15272 KALIPSO
 7897801300978 FITA ISOLANTE 20MX19MM KRONA
-   candidatos: 15
-   OK link: https://tumelerosaintgobain.vtexassets.com/arquivos/ids/190909-800-800?v=637654284684900000&width=800&height=800&a
 7908024214935 LAMPADA LED ALTA POTENCIA 20W 6500K E27 BIVOLT 1600LM G2 BRL CRISTALLUX
-   candidatos: 15
-   OK link: https://storage.cristallux.com.br/images/2024/08/lampada-led-alta-potencia-20w-6500k-e27-bivolt-1600lm-g2-brl-prod
 7908024213921 LAMPADA LED ALTA POTENCIA 20W 3000K E27 BIVOLT 1600LM G2 BRL CRISTALLUX
-   candidatos: 16
-   OK link: https://www.boxlar.com.br/wp-content/uploads/2025/12/39158.jpg
 7896544402119 GENCO TABLETES MULTIPLA ACAO 3 EM 1 T-200 200G
+   ML status 403
+   ML lista 0
    candidatos: 2
    OK link: https://telhanorte.vtexassets.com/arquivos/ids/329946-800-800
 7899612796875 ESPATULA ACO INOXIDAVEL LISA 100MM SPARTA
-   candidatos: 4
-   OK link: https://img.lojadomecanico.com.br/1000/31/276/105158/Espatula-de-Aco-Inoxidavel-de-4-Pol-com--sparta-8521851.JPG
 7899612796868 ESPATULA ACO INOXIDAVEL LISA 80MM SPARTA
-   candidatos: 4
-   OK link: https://img.lojadomecanico.com.br/1000/31/276/105156/Espatula-de-Aco-Inoxidavel-de-3-18-Pol-C-sparta-8521551.JPG
 7899612796844 ESPATULA ACO INOXIDAVEL LISA 50MM SPARTA
-   candidatos: 4
-   OK link: https://img.lojadomecanico.com.br/1000/31/276/105153/Espatula-de-Aco-Inoxidavel-de-2-Pol-Com--sparta-8520951.JPG
 7899612796851 ESPATULA ACO INOXIDAVEL LISA 60MM SPARTA
-   candidatos: 4
-   OK link: https://img.lojadomecanico.com.br/1000/31/276/343203/1660927592875.JPG
 7899389012079 ESPATULA PLASTICA DENTADA 10 859 CONDOR
 7899389012048 ESPATULA PLASTICA LISA 10 858 CONDOR
+7898543397373 ANTI FERRUGEM TEK LUB 300ML 150G TEKBOND
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7897208693447 ANTICORROSIVO DESENGRIPANTE AEROSSOL 300ML BARTOFIL
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898105771511 ABRACADEIRA PLASTICA 2,5X100 BRANCA (PACOTE COM 100)
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898472261851 ARALDITE HOBBY 23G TEKBOND
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898472261776 ARALDITE EPOXI HOBBY 10 MIN TEKBOND
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898472261592 ADESIVO ARALDITE PROFISSIONAL 23G TEKBOND
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898472254921 ADESIVO EPOXI ARALDITE MASSA 100G TEKBOND
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7891040004973 VEDA JUNTA 3M
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898314110149 VEDA JUNTA ORBIQUIMICA
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7908027208429 BAINHA DE LONA PARA FACAO 2901 LOTUS
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7908027208436 BAINHA DE LONA PARA FACAO 2902 LOTUS
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7908027208443 BAINHA DE LONA PARA FACAO 2903 LOTUS
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7908027208450 BAINHA DE LONA PARA FACAO 2904 LOTUS
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7896020633457 CONJUNTO ASSADOR 2 PCS FACA 9 E CHAIRA MOR
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7896020633464 CONJUNTO ASSADOR 3 FACAS MOR
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7893946180447 FACAO MATO 16 CABO PLASTICO VONDER
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7893946180461 FACAO MATO 20 CABO PLASTICO VONDER
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7896020633556 TABUA BAMBOO COM CABO 38,5 X 20,5 CM MOR
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7896020632085 ESPETO DUPLO 75CM MOR
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7896020632047 ESPETO SIMPLES 85CM MOR
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898622850041 CLORADOR MARGARIDA BRUSTEC
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
+7898622850058 CLORADOR MEDIO BRUSTEC
+   ML status 403
+   ML lista 0
+   candidatos: 0
+   SEM IMAGEM
 11 imagens prontas
