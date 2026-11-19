@@ -3,10 +3,6 @@
 7908024214935 LAMPADA LED ALTA POTENCIA 20W 6500K E27 BIVOLT 1600LM G2 BRL CRISTALLUX
 7908024213921 LAMPADA LED ALTA POTENCIA 20W 3000K E27 BIVOLT 1600LM G2 BRL CRISTALLUX
 7896544402119 GENCO TABLETES MULTIPLA ACAO 3 EM 1 T-200 200G
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://telhanorte.vtexassets.com/arquivos/ids/329946-800-800
 7899612796875 ESPATULA ACO INOXIDAVEL LISA 100MM SPARTA
 7899612796868 ESPATULA ACO INOXIDAVEL LISA 80MM SPARTA
 7899612796844 ESPATULA ACO INOXIDAVEL LISA 50MM SPARTA
@@ -14,50 +10,18 @@
 7899389012079 ESPATULA PLASTICA DENTADA 10 859 CONDOR
 7899389012048 ESPATULA PLASTICA LISA 10 858 CONDOR
 7898543397373 ANTI FERRUGEM TEK LUB 300ML 150G TEKBOND
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://imgs.extra.com.br/1576045847/1xg.jpg?imwidth=500
 7897208693447 ANTICORROSIVO DESENGRIPANTE AEROSSOL 300ML BARTOFIL
    ML status 403
    ML lista 0
    candidatos: 0
    SEM IMAGEM
 7898105771511 ABRACADEIRA PLASTICA 2,5X100 BRANCA (PACOTE COM 100)
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://img.lojadomecanico.com.br/1000/46/448/146015/1593692083689.JPG
 7898472261851 ARALDITE HOBBY 23G TEKBOND
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://imgs.extra.com.br/1573018440/1xg.jpg?imwidth=500
 7898472261776 ARALDITE EPOXI HOBBY 10 MIN TEKBOND
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://imgs.pontofrio.com.br/1570752835/1xg.jpg?imwidth=500
 7898472261592 ADESIVO ARALDITE PROFISSIONAL 23G TEKBOND
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://telhanorte.vtexassets.com/arquivos/ids/329571-650-650
 7898472254921 ADESIVO EPOXI ARALDITE MASSA 100G TEKBOND
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://telhanorte.vtexassets.com/arquivos/ids/1271758-650-650
 7891040004973 VEDA JUNTA 3M
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://img.lojadomecanico.com.br/1000/32/235/212748396/adesivopar-idany-3080051258.JPG
 7898314110149 VEDA JUNTA ORBIQUIMICA
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://img.lojadomecanico.com.br/1000/32/235/70401/Silicone-de-Alta-Temperatura-Vermelho-50-orbi-silic-alt-temper
 7908027208429 BAINHA DE LONA PARA FACAO 2901 LOTUS
    ML status 403
    ML lista 0
@@ -79,48 +43,16 @@
    candidatos: 0
    SEM IMAGEM
 7896020633457 CONJUNTO ASSADOR 2 PCS FACA 9 E CHAIRA MOR
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://img.lojadomecanico.com.br/1000/59/336/165662/1615890815901.JPG
 7896020633464 CONJUNTO ASSADOR 3 FACAS MOR
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://http2.mlstatic.com/D_NQ_NP_722001-MLA100058459025_122025-O.jpg
 7893946180447 FACAO MATO 16 CABO PLASTICO VONDER
-   ML status 403
-   ML lista 0
-   candidatos: 9
-   OK bing: https://images.justwatch.com/poster/258714748/s718/dreamworks-shreks-swamp-stories.jpg
+   candidatos: 2
+   OK link: https://img.lojadomecanico.com.br/1000/59/333/112092/1719603682578.JPG
 7893946180461 FACAO MATO 20 CABO PLASTICO VONDER
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   SEM IMAGEM
+   candidatos: 2
+   OK link: https://img.lojadomecanico.com.br/1000/59/333/112094/1719603964255.JPG
 7896020633556 TABUA BAMBOO COM CABO 38,5 X 20,5 CM MOR
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://imgs.pontofrio.com.br/1566600950/1xg.jpg?imwidth=500
 7896020632085 ESPETO DUPLO 75CM MOR
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://imgs.extra.com.br/1574870990/1xg.jpg?imwidth=500
 7896020632047 ESPETO SIMPLES 85CM MOR
-   ML status 403
-   ML lista 0
-   candidatos: 1
-   OK link: https://telhanorte.vtexassets.com/arquivos/ids/1210041-650-650
 7898622850041 CLORADOR MARGARIDA BRUSTEC
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://telhanorte.vtexassets.com/arquivos/ids/1275660-650-650
 7898622850058 CLORADOR MEDIO BRUSTEC
-   ML status 403
-   ML lista 0
-   candidatos: 2
-   OK link: https://telhanorte.vtexassets.com/arquivos/ids/1376069-650-650
-27 imagens prontas
+28 imagens prontas
