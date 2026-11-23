@@ -166,8 +166,14 @@ public final class BlingService {
                 int pts = PontosService.calcular(total);
                 if (pts <= 0) { ignorados++; continue; }
                 final Cliente alvo = cli;
-                Db.tx(c -> PontosService.creditar(c, alvo.id(), total, pts, "Pedido Bling nº " + numero, "BLING", idPedido,
-                        dataPedido.atTime(12, 0)));
+                try {
+                    Db.tx(c -> PontosService.creditar(c, alvo.id(), total, pts, "Pedido Bling nº " + numero, "BLING", idPedido,
+                            dataPedido.atTime(12, 0)));
+                } catch (br.com.royal.pontos.db.DbException dup) {
+                    // outro computador da loja importou este pedido ao mesmo tempo
+                    if (Db.numero("SELECT COUNT(*) FROM movimentos WHERE bling_pedido_id = ?", idPedido) > 0) { ja++; continue; }
+                    throw dup;
+                }
                 creditados++;
                 pontos += pts;
                 log.accept("  ✓ Pedido " + numero + " · " + alvo.nome() + " · " + Formatos.moeda(total) + " → " + Formatos.pontos(pts));

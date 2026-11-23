@@ -13,6 +13,7 @@ public final class Migracoes {
     private static final String CATALOGO_V1 = "migracao_catalogo_100pts_v1";
     private static final String CATALOGO_V2 = "migracao_catalogo_faixas_v2";
     private static final String CONSULTA_V3 = "migracao_consulta_compra_minima_v3";
+    private static final String BLING_AUTO_V4 = "migracao_bling_auto_v4";
 
     private Migracoes() {}
 
@@ -20,6 +21,11 @@ public final class Migracoes {
         if (Config.get(CATALOGO_V1).isBlank()) catalogoInicial();
         if (Config.get(CATALOGO_V2).isBlank()) catalogoFaixas();
         if (Db.isNuvem() && Config.get(CONSULTA_V3).isBlank()) atualizarConsultaCliente();
+        if (Config.get(BLING_AUTO_V4).isBlank()) {
+            // 23/11/2026: Douglas pediu para puxar as vendas do Bling ao abrir e ao atualizar o programa
+            Config.set(Config.BLING_AUTO_IMPORTAR, "true");
+            Config.set(BLING_AUTO_V4, java.time.LocalDateTime.now().toString());
+        }
     }
 
     /**

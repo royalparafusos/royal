@@ -158,7 +158,7 @@ public class MainView extends BorderPane {
             recarregarTela();
             Ui.toast(n > 0 ? "Atualizado — fotos novas em " + n + " prêmio(s)" : "Dados atualizados");
         });
-        importarBlingAutomatico();
+        importarBlingAutomatico(true);
         verificarAtualizacao(false);
     }
 
@@ -208,10 +208,22 @@ public class MainView extends BorderPane {
         conteudo.getChildren().setAll(view);
     }
 
-    private void importarBlingAutomatico() {
-        if (!Config.bool(Config.BLING_AUTO_IMPORTAR) || !BlingService.conectado()) return;
+    private void importarBlingAutomatico() { importarBlingAutomatico(false); }
+
+    /** Puxa as vendas do Bling (ao abrir e no botão Atualizar). */
+    private void importarBlingAutomatico(boolean avisarSemNovidade) {
+        if (!Config.bool(Config.BLING_AUTO_IMPORTAR)) return;
+        if (!BlingService.conectado()) {
+            if (Sessao.isAdmin()) Ui.toastErro("Bling não conectado: as vendas não foram puxadas. Conecte no menu Bling.");
+            return;
+        }
         Ui.async(() -> BlingService.importarPendentes(msg -> {}), r -> {
-            if (r.creditados() > 0) Ui.toast("Bling: " + r.creditados() + " venda(s) pontuada(s) automaticamente");
+            if (r.creditados() > 0) {
+                Ui.toast("Bling: " + r.creditados() + " venda(s) pontuada(s) automaticamente");
+                recarregarTela();
+            } else if (avisarSemNovidade) {
+                Ui.toast("Bling: nenhuma venda nova com CPF de cliente cadastrado");
+            }
         });
     }
 }
