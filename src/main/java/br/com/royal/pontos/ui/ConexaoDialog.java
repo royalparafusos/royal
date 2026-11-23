@@ -77,6 +77,7 @@ public final class ConexaoDialog {
         var r = d.showAndWait();
         if (r.isEmpty() || r.get() != salvar) return false;
         cfg.setNuvem(nuvem.isSelected());
+        cfg.setDemoEscolhido(!nuvem.isSelected());
         cfg.setNuvem(host.getText(), porta.getText(), banco.getText(), usuario.getText(), senha.getText());
         return Ui.tentar(() -> {
             try { cfg.salvar(); } catch (Exception ex) { throw new RuntimeException("Não foi possível salvar: " + ex.getMessage()); }

@@ -56,6 +56,10 @@ public class App extends Application {
 
     /** Conecta e prepara o banco. Se falhar, oferece configurar a conexão. */
     private static boolean conectarBanco() {
+        AppConfig inicial = AppConfig.carregar();
+        if (!inicial.isNuvem() && !inicial.demoEscolhido()) {
+            if (!br.com.royal.pontos.ui.NuvemDialog.abrir()) { janela.close(); return false; }
+        }
         while (true) {
             try {
                 AppConfig cfg = AppConfig.carregar();
@@ -64,6 +68,7 @@ public class App extends Application {
                 Config.garantirPadroes();
                 br.com.royal.pontos.service.Migracoes.aplicar();
                 PontosService.processarExpiracoes();
+                if (Db.isNuvem()) oferecerSincronizacao();
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -74,6 +79,25 @@ public class App extends Application {
                     return false;
                 }
             }
+        }
+    }
+
+    /** Se este computador tem lançamentos do banco local que ainda não foram para a nuvem, oferece enviar. */
+    private static void oferecerSincronizacao() {
+        var p = br.com.royal.pontos.service.Sincronizacao.pendente(false);
+        if (p == null) return;
+        boolean enviar = Ui.confirmar("Enviar dados deste computador para a nuvem?",
+                "Este computador tem " + p.clientes() + " cliente(s) e " + p.movimentos() + " lançamento(s) feitos antes de conectar à nuvem.\n\n"
+                        + "Deseja juntar esses dados com os da nuvem agora? Nada será duplicado: clientes são reconhecidos pelo CPF.");
+        if (!enviar) { br.com.royal.pontos.service.Sincronizacao.dispensar(); return; }
+        try {
+            var r = br.com.royal.pontos.service.Sincronizacao.enviar();
+            Ui.info("Dados enviados para a nuvem", r.clientesNovos() + " cliente(s) novo(s) e " + r.movimentosNovos()
+                    + " lançamento(s) enviados." + (r.movimentosJaExistiam() > 0 ? "\n" + r.movimentosJaExistiam() + " lançamento(s) já estavam na nuvem e foram ignorados." : "")
+                    + "\n\nAgora todos os computadores mostram os mesmos dados.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Ui.erro("Não foi possível enviar os dados: " + e.getMessage() + "\n\nVocê pode tentar de novo em Configurações › Banco de dados.");
         }
     }
 

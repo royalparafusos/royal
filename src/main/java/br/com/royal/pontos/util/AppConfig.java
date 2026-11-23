@@ -58,6 +58,19 @@ public final class AppConfig {
         p.setProperty("db.senha", senha);
     }
 
+    /** O usuário escolheu de propósito usar só este computador (modo demonstração). */
+    public boolean demoEscolhido() { return "sim".equals(p.getProperty("db.demo", "")); }
+    public void setDemoEscolhido(boolean v) { p.setProperty("db.demo", v ? "sim" : ""); }
+
+    /** Banco local (H2) deste computador, usado no modo demonstração. */
+    public static Path arquivoLocal() { return PASTA.resolve("dados").resolve("royalpontos.mv.db"); }
+
+    public static String jdbcUrlLocal() {
+        Path arquivo = PASTA.resolve("dados").resolve("royalpontos");
+        return "jdbc:h2:file:" + arquivo.toAbsolutePath()
+                + ";MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;AUTO_SERVER=TRUE";
+    }
+
     public String jdbcUrl() {
         if (isNuvem()) {
             return "jdbc:postgresql://" + host() + ":" + porta() + "/" + banco()

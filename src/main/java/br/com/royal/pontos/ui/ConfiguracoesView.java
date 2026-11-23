@@ -122,6 +122,29 @@ public class ConfiguracoesView extends StackPane {
                 Ui.espaco(), conexao);
         banco.setAlignment(Pos.CENTER_LEFT);
         VBox cardBanco = Ui.cardTitulo("Banco de dados", null, banco);
+        if (Db.isNuvem()) {
+            Button copiarCodigo = Ui.botao("Copiar código de conexão", "btn-secundario", Icones.NUVEM);
+            copiarCodigo.setOnAction(e -> {
+                var cc = new javafx.scene.input.ClipboardContent();
+                cc.putString(br.com.royal.pontos.util.Nuvem.gerarCodigo(br.com.royal.pontos.util.AppConfig.carregar()));
+                javafx.scene.input.Clipboard.getSystemClipboard().setContent(cc);
+                Ui.info("Código copiado", "Cole este código no outro computador da loja, na tela \"Conectar à nuvem da Royal\".\n\n"
+                        + "Atenção: o código dá acesso ao banco da loja. Use só nos computadores da Royal e não envie para outras pessoas.");
+            });
+            Button enviarLocal = Ui.botao("Enviar dados deste computador para a nuvem", "btn-secundario", Icones.SYNC);
+            enviarLocal.setOnAction(e -> {
+                var p = br.com.royal.pontos.service.Sincronizacao.pendente(true);
+                if (p == null) { Ui.info("Nada para enviar", "Este computador não tem lançamentos guardados fora da nuvem."); return; }
+                if (!Ui.confirmar("Enviar dados deste computador?", "Encontrados " + p.clientes() + " cliente(s) e " + p.movimentos()
+                        + " lançamento(s) no banco local deste computador. Juntar com a nuvem? Nada será duplicado.")) return;
+                enviarLocal.setDisable(true);
+                Ui.async(br.com.royal.pontos.service.Sincronizacao::enviar, r -> Ui.info("Dados enviados",
+                        r.clientesNovos() + " cliente(s) novo(s) e " + r.movimentosNovos() + " lançamento(s) enviados. "
+                                + r.movimentosJaExistiam() + " já estavam na nuvem."), () -> enviarLocal.setDisable(false));
+            });
+            HBox extras = new HBox(10, copiarCodigo, enviarLocal);
+            cardBanco.getChildren().add(extras);
+        }
 
         Button verificar = Ui.botao("Verificar atualizações", "btn-secundario", Icones.SYNC);
         verificar.setOnAction(e -> MainView.atual().verificarAtualizacao(true));
